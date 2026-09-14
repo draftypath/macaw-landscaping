@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- BEFORE LAUNCH: hello@macawlandscaping.ca below is a placeholder.
+     This is the URL Formspree redirects to when JS is off — with JS on,
+     nobody lands here, they get the overlay instead. Use this page as the
+     conversion goal in analytics. Keep it noindex. -->
+
+<title>Thank you — Macaw Landscaping</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #eeece3;
+    --club: #1f3d2b;
+    --ink: #1c2620;
+    --ink-soft: #55635b;
+    --rule: rgba(31, 61, 43, .18);
+    --serif: "Newsreader", "Iowan Old Style", "Palatino", Georgia, serif;
+    --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--club); outline-offset: 3px; }
+
+  main { width: min(540px, 100% - 3rem); padding-block: 4rem; }
+
+  h1 {
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    color: var(--club);
+    font-size: clamp(2.1rem, 5vw, 3.2rem);
+    line-height: 1.05;
+    margin: 0 0 1.1rem;
+  }
+  p { margin: 0 0 1rem; color: var(--ink-soft); max-width: 44ch; }
+  p a { color: var(--club); text-decoration: none; border-bottom: 1px solid var(--rule); }
+
+  .back {
+    display: inline-block;
+    margin-top: 1.6rem;
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--club);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: .25rem;
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <h1>Thank you.</h1>
+  <p>Your message is with us. We read every one, and we’ll come back to you within two business days.</p>
+  <p>Sooner, if you need it — email <a href="mailto:hello@macawlandscaping.ca">hello@macawlandscaping.ca</a>.</p>
+  <a class="back" href="index.html">Back to Macaw</a>
+</main>
+
+<script>
+  /* Same conversion signal the in-page path fires, so both routes land in
+     one place in analytics. */
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: 'enquiry_submitted', form: 'contact' });
+</script>
+
+</body>
+</html>

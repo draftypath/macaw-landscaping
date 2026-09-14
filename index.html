@@ -1,0 +1,2654 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ===========================================================
+     BEFORE LAUNCH — five real values to drop in. Search these
+     exact strings; every one appears in a marked spot below.
+
+     1. FORMSPREE_ID     form action + the _next field
+     2. (250) 555-0142   contact block (twice: link text + tel:)
+     3. hello@macawlandscaping.ca   contact block, _next domain,
+                                    privacy.html, thanks.html
+     4. macawlandscaping.ca         the live domain, used by _next
+     5. instagram.com/macawlandscaping   header + footer
+
+     Nothing else is stubbed. privacy.html and thanks.html ship
+     alongside this file and need the same four values.
+     =========================================================== -->
+
+<title>Macaw Landscaping — Victoria, BC</title>
+<meta name="description" content="Garden care, planting and stonework for homes across Victoria and the South Island. Get in touch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..700&family=Jost:wght@400..700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #eeece3;
+    --club: #1f3d2b;        /* country club green */
+    --ink: #1c2620;
+    --ink-soft: #55635b;
+    --dots: #7f9a7e;
+    --board: #e5e2d6;      /* the mat the enquiry sheet is laid on */
+    --rule: rgba(31, 61, 43, .18);
+    --warn: #8c3f26;        /* a clay that sits on the paper without shouting */
+    --didone: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;   /* hero headline and the thank-you card */
+    /* The wordmark is the one place the brand already exists in the world —
+       it is painted on the van — so it is set in the van's letterform rather
+       than the page's. Jost is the geometric the signwriter used, or near
+       enough that the two do not read as different words. */
+    --mark: "Jost", "Futura", "Century Gothic", "Avenir Next", sans-serif;
+    --serif: "Newsreader", "Iowan Old Style", "Palatino", Georgia, serif; /* everything else */
+    --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--club); outline-offset: 3px; }
+  img { display: block; max-width: 100%; }
+
+  .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  /* ---------- hero ---------- */
+  /* Three depth layers share one box and identical cover geometry, so the
+     cutout registers exactly on the photo at rest and only separates on scroll.
+     --zoom gives every layer bleed to travel into, so nothing ever gaps. */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 100svh;
+    color: #f2eee4;
+    background: #2a2f27;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    isolation: isolate;
+    --zoom: 1.14;
+    --bg-shift: 0px;
+    --fg-shift: 0px;
+    --words-shift: 0px;
+    --tag-shift: 0px;
+  }
+  .hero-bg, .hero-fg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: center center;
+    will-change: transform;
+    pointer-events: none;
+  }
+  .hero-bg {
+    z-index: 0;
+    background: url("titleimage.png") center / cover no-repeat;
+    transform: translate3d(0, var(--bg-shift), 0) scale(var(--zoom));
+  }
+  .hero-fg {
+    z-index: 3;
+    filter: brightness(.82);
+    object-fit: cover;
+    object-position: center;
+    transform: translate3d(0, var(--fg-shift), 0) scale(calc(var(--zoom) * var(--fg-grow, 1)));
+  }
+  /* The tint sits above BOTH photo layers, so the cutout is shaded identically
+     to the photo behind it and the seam stays invisible. */
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0; z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.18) 30%, rgba(0,0,0,.18) 70%, rgba(0,0,0,.5));
+  }
+  .hero::after {
+    content: "";
+    position: absolute; inset: 0; z-index: 4;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,.18) 80%, rgba(0,0,0,.34) 100%);
+  }
+  .hero-top, .hero-tag { position: relative; z-index: 5; }
+  /* Every in-flow child is placed by hand. The CTA shares the headline's cell,
+     and auto-placement would otherwise refuse to double up and push the
+     headline into a row of its own. */
+  .hero-top   { grid-row: 1; grid-column: 1; }
+  .hero-words { grid-row: 2; grid-column: 1; }
+  .hero-cta   { grid-row: 2; grid-column: 1; }
+  .hero-tag   { grid-row: 3; grid-column: 1; }
+  /* The headline sits UNDER the cutout, so the rising bushes sweep over it. */
+  .hero-words {
+    position: relative;
+    z-index: 2;
+    /* lags hard, so it hangs in place while the bushes climb through it */
+    transform: translate3d(0, var(--words-shift), 0);
+    will-change: transform;
+  }
+  .hero-tag {
+    transform: translate3d(0, var(--tag-shift), 0);
+    will-change: transform;
+  }
+  .hero-top {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    padding: 2.4rem 2.5rem 0;
+  }
+  /* Bodoni's optical-size axis runs 6 to 96, and `font-optical-sizing: auto`
+     picks the top of it at display sizes — the poster cut, whose hairlines are
+     a pixel or two wide. That cut is drawn for flat paper. Over a photograph
+     or a halftone the thins drop out and the word reads as a row of
+     disconnected stems. So every Bodoni that sits ON an image is pinned to a
+     text-weight optical size instead: same face, same drama in the thick
+     strokes, but hairlines with enough body to survive a leaf behind them.
+     Bodoni on a clean surface keeps `auto`. */
+  .brand { grid-column: 2; text-align: center; text-decoration: none; display: grid; justify-items: center; }
+  .brand img { width: clamp(44px, 4.6vw, 64px); height: auto; margin-bottom: .9rem; }
+  .brand-name {
+    display: block;
+    font-family: var(--didone);
+    font-variation-settings: "opsz" 24, "wght" 400;
+    font-size: clamp(2.55rem, 4.9vw, 4.25rem);
+    text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 2px 20px rgba(0,0,0,.45);
+    letter-spacing: .12em;
+    line-height: 1;
+    text-indent: .12em;
+  }
+  /* The smallest thing in the hero was also the only thing in it with no
+     shadow, set thin and tracked so wide the letters never formed a word. It
+     keeps the airy lockup spacing, but with weight behind it and the same
+     shadow stack everything else here wears. The extra size pays back the
+     width the tighter tracking gives up, so the lockup's proportions hold. */
+  .brand-sub {
+    display: block;
+    margin-top: .85rem;
+    font-size: .8rem;
+    font-weight: 500;
+    letter-spacing: .34em;
+    text-indent: .34em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0,0,0,.65), 0 2px 14px rgba(0,0,0,.6), 0 0 34px rgba(0,0,0,.5);
+  }
+  .hero-words {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* the bottom padding lifts the headline above the bushes at rest, leaving
+       room for them to close over it as you scroll */
+    padding: 0 2.5rem 14vh;
+    gap: 2rem;
+  }
+  .hero-words span {
+    color: #fff;
+    /* three layers doing three jobs: a tight one for edge definition on the
+       hairlines, a mid one for local contrast, a broad one to sit the whole
+       word down into the planting */
+    text-shadow: 0 1px 2px rgba(0,0,0,.55), 0 2px 16px rgba(0,0,0,.6), 0 0 70px rgba(0,0,0,.45);
+    font-family: var(--didone);
+    font-variation-settings: "opsz" 16, "wght" 440;
+    font-size: clamp(2.6rem, 6.4vw, 6.6rem);
+    letter-spacing: .02em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  /* The one thing to press, put where the eye already is: dead centre, and on
+     the near side of the cutout so the bushes rise BEHIND it rather than over
+     it. It shares the grid cell with the headline, so it is centred against
+     the same box the words are, then dropped clear of them onto the beds.
+     Paper stock laid on the garden — the sheet the enquiry form is printed on. */
+  .hero-cta {
+    z-index: 5;
+    place-self: center;
+    position: relative;
+    top: clamp(3.25rem, 8vh, 6.5rem);   /* clear of the headline, down on the beds */
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--club);
+    background: var(--paper);
+    padding: 1.05rem 2.3rem;
+    box-shadow: 0 20px 44px -24px rgba(8, 16, 10, .8);
+    transform: translate3d(0, var(--tag-shift), 0);
+    will-change: transform;
+    transition: background .32s ease, color .32s ease;
+  }
+  .hero-cta:hover { background: var(--club); color: var(--paper); }
+  .hero-cta:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
+
+  .hero-tag {
+    text-align: center;
+    padding: 0 2rem 2.6rem;
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-size: clamp(1.15rem, 1.85vw, 1.6rem);
+    color: #fff;
+    text-shadow: 0 2px 22px rgba(0,0,0,.75), 0 1px 4px rgba(0,0,0,.45);
+  }
+
+  /* ---------- body ---------- */
+  section { padding-block: clamp(3.5rem, 6.5vw, 6rem); }
+  /* Half a boundary. Declared here so every section on the paper measures the
+     same seam — see the note above the services list. */
+  main { --seam: clamp(1.7rem, 3vw, 3.25rem); }
+  h2, h3 {
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    color: var(--club);
+    margin: 0;
+  }
+
+  /* The plates hang off the end of the statement, so this boundary is the
+     seam as well — it was the last one on the page still opening a full
+     measure into the gallery's own padding. */
+  .lede { padding-bottom: var(--seam); }
+  .lede .wrap {
+    display: grid;
+    /* The statement and the copy are one column now, so the split is no
+       longer about giving the sentence room — it is about giving the two
+       portraits room. The picture column takes the larger share. */
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+    gap: 2rem 3.5rem;
+    /* The statement column is centred against the pair rather than hung from
+       its first line. Baseline alignment was right while the two blocks were
+       near enough the same height; the portraits run longer, and a column
+       pinned to the top of that left a screen of nothing beneath it. */
+    align-items: center;
+  }
+  .lede h2 {
+    /* The size stops growing where the measure does. It did not: past a
+       1168px window the column freezes at its cap and the type kept climbing
+       to 2.9rem, so the sentence ran out of room and broke into four lines
+       with a lumpy rag — a long line, a short one, two middling ones. That is
+       what read as unformatted. Nothing was wrong with the words.
+
+       The cap came down from 2.45rem when this column gave width to the
+       portraits: the longest hand-set line wants about 14.6em, and 2.05rem is
+       what that measures inside the track now. Raising it again without
+       widening the track puts the sentence back to four lines. */
+    font-size: clamp(1.7rem, 2.9vw, 2.05rem);
+    /* display leading and display tracking: a didone set at 40px wants both
+       pulled in from the values that suit it at 17px */
+    line-height: 1.1;
+    letter-spacing: -.014em;
+    /* No max-width: the grid column IS the measure. An 18ch cap inside a 576px
+       track left 162px of dead space that belonged to no one, so the visible
+       gutter was 226px where the grid said 64 — the two blocks lined up with
+       nothing, which is what made the spread read as unformatted. */
+    text-wrap: balance;
+  }
+  /* Three lines, broken by hand at the sense of the sentence rather than
+     wherever the column runs out: what plants and prunes, what it builds and
+     looks after, where. Balance is left in as the fallback for the stacked
+     layout, where these breaks are turned off.
+
+     Each break carries a space before it in the markup. A <br> collapses the
+     whitespace around it, so with the element hidden there was nothing left
+     between the words and the sentence read "prunes,builds" and "gardensin"
+     on every phone. The space is ignored where the break shows and is the
+     only separator where it does not. */
+  .lede h2 br { display: inline; }
+  /* One colour for body copy, the same one the rest of the page uses. These
+     two paragraphs were set in different inks; the break between them is what
+     separates the thoughts. No character cap: the copy sits under the
+     statement now and shares its column, so the track is the measure and a
+     48ch rule would only stop the paragraphs short of the sentence above. */
+  .lede p { margin: 0; color: var(--ink-soft); }
+  .lede p + p { margin-top: .9rem; }
+  .lede-statement h2 + p { margin-top: clamp(1.2rem, 2.2vw, 1.7rem); }
+
+  /* The two of them, under the copy that names them and across from the
+     statement, which centres against the pair.
+
+     Full-length and in colour, at the frame the photographs came in. They
+     are the only pictures of people anywhere on the page, which is what
+     separates them from the work plates a screen below — those are all
+     ground and stone and nobody in them. */
+  .crew {
+    list-style: none;
+    margin: clamp(1.8rem, 3.4vw, 2.6rem) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .crew figure { margin: 0; }
+  .crew img {
+    width: 100%;
+    /* The page's global img rule sets max-width but not height, so the
+       height attribute on these two came through as a literal pixel box and
+       stretched them into slivers. Nothing else on the page carries both
+       dimension attributes outside a .pic wrapper, which is why this is the
+       only place it showed. */
+    height: auto;
+    /* 440x712 — the ratio both files share, so cover has nothing to trim */
+    aspect-ratio: 55 / 89;
+    object-fit: cover;
+    /* the board tone holds the shape while the file is still coming */
+    background: var(--board);
+  }
+  .crew figcaption {
+    margin-top: .8rem;
+    font-size: .85rem;
+    line-height: 1.4;
+    color: var(--ink-soft);
+  }
+  /* the name in the label the contact block sets its terms in, the trade
+     under it in the same voice the work plates are captioned in */
+  .crew-name {
+    display: block;
+    margin-bottom: .3rem;
+    font-size: .66rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--club);
+  }
+
+  /* ---------- work ---------- */
+  /* Six mounted plates on their own measure, wider than the text, laid in one
+     line that keeps going past the right edge of the page. All one size.
+
+     They were not: the middle frame of three was cut 1.16 wider, and
+     therefore taller, so the row read as a composition rather than a strip of
+     tiles. That works on a row you take in at once and stops working the
+     moment the row becomes a line you move along. The emphasis lands on
+     whichever plate happens to be second, which means nothing, and the extra
+     height reserves a band of empty paper above the whole rail that is only
+     occupied while that one plate is on screen — everywhere else you are
+     looking at a hole. Equal plates give the band back and let the line read
+     as a line.
+
+     The slice of the fourth plate showing past the measure is the only thing
+     that says the others are there, which is why the rail runs to the edge of
+     the screen instead of stopping where the text does. Each plate is a
+     button: it opens into the viewer below. */
+  /* The rail used to run straight on from the statement, which is why it
+     opened on almost no padding. It has a heading of its own now — it was
+     the only section on the page without one, and a band of six photographs
+     with nothing naming them reads as decoration rather than as the work.
+     So it takes the same seam the other sections take.
+
+     The heading sits on the text measure while the plates keep their wider
+     one: it is a child of .work-wrap, and only the list carries the negative
+     margins that let the line bleed past the edge. */
+  .work { padding-top: var(--seam); padding-bottom: var(--seam); }
+  .work-wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+  .work h2 { margin: 0 0 clamp(1.4rem, 2.6vw, 2.2rem); font-size: clamp(1.85rem, 3vw, 2.5rem); line-height: 1.04; }
+  .work ul {
+    --g: clamp(1rem, 2.2vw, 2.1rem);
+    --base: calc((100% - 2 * var(--g)) / 3);
+    /* how far past the measure the line runs on the right. The 1rem it stops
+       short of the viewport covers a classic scrollbar, so widening the rail
+       can never give the page a horizontal scroll of its own. */
+    --bleed: max(0px, calc((100vw - 100%) / 2 - 1rem));
+    /* and how far it starts out on the left. The row was sitting exactly on
+       the text measure, which is correct and still read as shoved right: a
+       band of photographs is one horizontal object, and this one had the
+       whole page margin on one side of it and ran off the screen on the
+       other. So the pictures get their own measure, wider than the words —
+       half the margin back on the left, capped so they never crowd the edge,
+       and worth nothing at all by the time the margin is thin. */
+    --step: min(calc(var(--bleed) / 2), 4.5rem);
+    list-style: none; margin: 0; padding: 0;
+    display: flex;
+    /* tops on one line: the plates are all the same height, so a caption that
+       wraps to two lines hangs downward instead of shunting its plate up */
+    align-items: start;
+    gap: var(--g);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    margin-left: calc(var(--step) * -1);
+    margin-right: calc(var(--bleed) * -1);
+    /* the same distance again inside, so scrolled to the end the last plate
+       finishes on the measure rather than against the glass */
+    padding-right: var(--bleed);
+    /* overflow on one axis clips the other, so the shadows need room to fall */
+    padding-bottom: 1rem;
+  }
+  .work ul::-webkit-scrollbar { display: none; }
+  .work li { flex: 0 0 var(--base); min-width: 0; scroll-snap-align: start; }
+  .work figure { margin: 0; }
+  .plate {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #d9d8cc;
+    overflow: hidden;
+    cursor: zoom-in;
+    box-shadow: 0 18px 40px -28px rgba(31, 61, 43, .5);
+  }
+  .plate img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transform: scale(1.001);
+    transition: transform 1.1s cubic-bezier(.22, 1, .36, 1);
+  }
+  /* a mount line, the way a print sits inside its board */
+  .plate::after {
+    content: "";
+    position: absolute;
+    inset: clamp(9px, 1vw, 15px);
+    border: 1px solid rgba(255, 255, 255, .62);
+    opacity: 0;
+    transition: opacity .45s ease;
+    pointer-events: none;
+  }
+  .plate:hover img, .plate:focus-visible img { transform: scale(1.05); }
+  .plate:hover::after, .plate:focus-visible::after { opacity: 1; }
+  .plate.is-open img { visibility: hidden; }
+  .work figcaption {
+    margin-top: .9rem;
+    font-size: .9rem;
+    color: var(--ink-soft);
+    transition: color .3s ease;
+  }
+  .work li:hover figcaption { color: var(--club); }
+
+  /* Six plates on a line that only ever shows two or three of them: the dots
+     are how a mouse gets to the rest, and how you know how many there are. */
+  .rail-dots {
+    display: flex;
+    gap: .35rem;
+    justify-content: center;
+    margin-top: .5rem;
+  }
+  .rail-dots button {
+    width: 26px; height: 26px;        /* a real tap target around a small dot */
+    display: grid; place-items: center;
+    padding: 0; border: 0; background: none; cursor: pointer;
+    -webkit-appearance: none; appearance: none;
+  }
+  .rail-dots button::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(31, 61, 43, .3);
+    transition: background .3s ease, transform .3s ease;
+  }
+  .rail-dots button.is-on::before { background: var(--club); transform: scale(1.3); }
+  /* Off the phone the quotations are a three-column grid with nothing to page
+     through, so their dots stay away until the rail exists. */
+  #review-dots { display: none; margin-top: .7rem; }
+  .rail-dots button:focus-visible { outline: 2px solid var(--club); outline-offset: -2px; }
+
+  /* ---------- viewer ---------- */
+  /* The clicked plate keeps its own crop and travels to the middle of the
+     screen, unfolding to the full frame as it goes. */
+  .viewer {
+    position: fixed; inset: 0; z-index: 50;
+    visibility: hidden;
+    cursor: zoom-out;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .viewer.is-open { visibility: visible; }
+  .viewer-scrim {
+    position: absolute; inset: 0;
+    background: #101a13;
+    opacity: 0;
+    transition: opacity .42s ease;
+  }
+  .viewer.is-open .viewer-scrim { opacity: 1; }
+  .viewer.is-closing .viewer-scrim { opacity: 0; transition-duration: .36s; }
+  .viewer-frame {
+    position: absolute;
+    overflow: hidden;
+    background: #101a13;
+    will-change: transform, width, height;
+  }
+  .viewer.is-fading .viewer-frame { opacity: 0; transition: opacity .3s ease; }
+  .viewer-frame img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .viewer-frame img.is-shown { opacity: 1; }
+  .viewer-caption {
+    position: absolute;
+    left: 50%;
+    width: min(46ch, calc(100% - 3rem));
+    transform: translateX(-50%);
+    text-align: center;
+    opacity: 0;
+    transition: opacity .32s ease .1s, top .42s cubic-bezier(.22, 1, .36, 1);
+  }
+  .viewer.is-ready .viewer-caption { opacity: 1; }
+  .viewer-caption p {
+    margin: 0;
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-size: clamp(1rem, 1.3vw, 1.18rem);
+    color: rgba(242, 238, 228, .88);
+  }
+  /* the rules stay 28×1; the padding around them is the part you aim at */
+  .viewer-ticks { display: flex; justify-content: center; gap: 0; margin-top: .55rem; }
+  .viewer-ticks button { padding: 16px 5px; border: 0; background: none; cursor: pointer; }
+  .viewer-ticks span { display: block; width: 28px; height: 1px; background: rgba(242, 238, 228, .28); transition: background .3s ease; }
+  .viewer-ticks button:hover span { background: rgba(242, 238, 228, .6); }
+  .viewer-ticks button[aria-current="true"] span { background: rgba(242, 238, 228, .92); }
+
+  /* the photos either side, held just off the frame and well faded back.
+     The button is the tap column; the span inside it is the sliver you see,
+     so the reach can be wider than the picture on a phone. */
+  .viewer-peek {
+    position: absolute;
+    top: 0; bottom: 0;
+    padding: 0; border: 0; background: none;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .45s ease .08s;
+  }
+  .viewer.is-ready .viewer-peek { opacity: 1; }
+  .viewer-peek span {
+    position: absolute;
+    top: 0; bottom: 0;
+    overflow: hidden;
+    display: block;
+  }
+  .viewer-peek-prev span {
+    right: 0;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 78%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 78%);
+  }
+  .viewer-peek-next span {
+    left: 0;
+    -webkit-mask-image: linear-gradient(to left, transparent 0%, #000 78%);
+    mask-image: linear-gradient(to left, transparent 0%, #000 78%);
+  }
+  .viewer-peek img {
+    position: absolute;
+    max-width: none;
+    object-fit: cover;
+    opacity: .5;
+  }
+  .viewer-peek-prev img { right: 0; }
+  .viewer-peek-next img { left: 0; }
+  .viewer-peek span::after {
+    content: "";
+    position: absolute; top: 50%; left: 50%;
+    width: 10px; height: 10px;
+    margin: -6px 0 0 -5px;
+    border-left: 1px solid #f2eee4;
+    border-bottom: 1px solid #f2eee4;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .viewer-peek-prev span::after { transform: rotate(45deg); }
+  .viewer-peek-next span::after { transform: rotate(-135deg); }
+  .viewer-peek:hover span::after, .viewer-peek:focus-visible span::after { opacity: .8; }
+
+  .viewer-close {
+    position: absolute;
+    border: 0; background: none; cursor: pointer;
+    color: #f2eee4;
+    opacity: 0;
+    transition: opacity .35s ease;
+    top: max(.9rem, 1.6vw); right: max(.9rem, 1.6vw);
+    width: 52px; height: 52px; display: grid; place-items: center;
+  }
+  .viewer.is-ready .viewer-close { opacity: .5; }
+  .viewer.is-ready .viewer-close:hover { opacity: 1; }
+  .viewer-close span { position: relative; width: 15px; height: 15px; }
+  .viewer-close span::before, .viewer-close span::after {
+    content: ""; position: absolute; left: 0; top: 50%;
+    width: 100%; height: 1px; background: currentColor;
+  }
+  .viewer-close span::before { transform: rotate(45deg); }
+  .viewer-close span::after { transform: rotate(-45deg); }
+  .viewer :focus-visible { outline: 2px solid rgba(242, 238, 228, .85); outline-offset: 3px; }
+
+  /* A boundary between two paper sections is ONE gap, and the two sections
+     either side of it were each opening a full one — so every seam on the
+     page measured double and read as a hole rather than a break. They share
+     it now: half each. The seam is also smaller than it was when the services
+     list opened cold on a rule, because a heading marks the boundary on its
+     own and needs less air to be seen doing it. */
+  .services, .where, .reviews { padding-block: var(--seam); }
+  /* The one seam that is not two pieces of paper: the enquiry band changes
+     colour, so it carries its own top padding and only needs a tail above it. */
+  .reviews { padding-bottom: clamp(1.4rem, 2.4vw, 2.5rem); }
+  .services h2, .where h2, .reviews h2 {
+    font-size: clamp(1.85rem, 3vw, 2.5rem);
+    line-height: 1.04;
+    margin: 0 0 clamp(1.4rem, 2.6vw, 2.2rem);
+  }
+  .services ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  /* Three columns: a small plate, the name, the description. The plate is
+     mounted the same way the work photographs are, a size down, so the two
+     sections read as the same material — prints on the same paper. */
+  .services li {
+    display: grid;
+    grid-template-columns: clamp(6.5rem, 11vw, 9.5rem) minmax(0, 1fr) minmax(0, 1.4fr);
+    /* Centred on the row, not the baseline. Baseline kept the heading and the
+       description sharing one line, which reads well against each other —
+       but the picture defines the row's height, is usually the tallest thing
+       in it, and has no baseline of its own to join that arrangement. Excluded
+       from it, it just sat filling its own track top to bottom while the text
+       pair sat wherever their shared baseline naturally fell — near the top of
+       a row taller than they are — which is the "still high" you're seeing.
+       Centring the whole row fixes the picture and the text against each
+       other; the small cost is that the heading's baseline and the
+       description's first line no longer land on the exact same rule, which
+       is a much smaller mismatch than a picture sitting visibly off-centre. */
+    align-items: center;
+    gap: 1rem 3rem;
+    /* Deliberately not symmetrical. The heading hands back ascender space
+       above its cap line and the description hands back descender and leading
+       below its last one, so an even 1.35rem top and bottom measures equal on
+       the rules but reads as though every row is sitting high. */
+    padding: 1.6rem 0 1.35rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .services h3 { font-size: clamp(1.35rem, 2vw, 1.75rem); line-height: 1.15; text-wrap: balance; }
+  /* text-wrap: pretty keeps a lone word off the last line of the longer entries */
+  .services p { margin: 0; color: var(--ink-soft); max-width: 54ch; text-wrap: pretty; }
+  .services .pic {
+    display: block;
+    aspect-ratio: 4 / 3;
+    background: #d9d8cc;
+    overflow: hidden;
+    box-shadow: 0 14px 30px -24px rgba(31, 61, 43, .5);
+  }
+  .services .pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* ---------- where we work ----------
+     This was the odd row at the bottom of the services list: no picture, a
+     name set at service size, describing something that is not a service.
+     It is its own spread now, with its own heading at the same size as
+     "What we do", because a service area is a fact about the business rather
+     than a fifth thing the business sells.
+
+     The heading and the places are one block, read top to bottom; the map is
+     the other, hung beside them and centred against the whole block rather
+     than aligned to its top. Two objects of different heights on one line
+     only look placed if their middles agree.
+
+     The map is mounted the way the work photographs are — flat on the paper,
+     one long soft shadow, no border and no rounded corners — and it is
+     printed rather than screenshotted: land in the page's own paper, water
+     and parks in two greens off the club, and the area itself shaded and
+     ringed in the club green. Nothing in it is a colour the rest of the page
+     does not already use. */
+  .where .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.32fr);
+    column-gap: clamp(2.5rem, 5vw, 5rem);
+    align-items: center;
+  }
+  /* tighter than the services heading: there it opens a long list and needs
+     the air, here it has one paragraph sitting directly under it */
+  .where h2 { margin-bottom: clamp(1rem, 1.8vw, 1.45rem); }
+  /* The same rule the services list opens on, in the same place relative to
+     the heading, so the two sections are still visibly one document. */
+  .where-copy p:not(.where-ask) {
+    margin: 0;
+    color: var(--ink-soft);
+    text-wrap: pretty;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.15rem;
+  }
+  /* The one useful thing a service-area map cannot do: a boundary always has
+     someone just outside it, and the answer for them is not "no", it is
+     "ask". Set in the page's other voice and carried on the same underline
+     the review score uses, so it reads as an invitation and not a button. */
+  .where-ask {
+    margin: clamp(1.1rem, 2vw, 1.6rem) 0 0;
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-style: italic;
+    font-size: clamp(1.05rem, 1.35vw, 1.2rem);
+    line-height: 1.4;
+    color: var(--club);
+  }
+  .where-ask a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: .08em;
+    transition: border-color .3s ease;
+  }
+  .where-ask a:hover { border-bottom-color: var(--club); }
+  .where figure {
+    margin: 0;
+  }
+  .where figure .pic {
+    display: block;
+    background: #d9d8cc;
+    overflow: hidden;
+    /* longer and softer than the service plates: it is a bigger object and a
+       short hard shadow under a wide image reads as a box, not a print */
+    box-shadow: 0 26px 54px -34px rgba(31, 61, 43, .55);
+  }
+  .where figure img { width: 100%; height: auto; }
+  /* the work plates caption themselves the same way — same size, same ink,
+     same distance below the picture */
+  .where figcaption { margin-top: .9rem; font-size: .9rem; color: var(--ink-soft); }
+
+  /* ---------- reviews ----------
+     Three voices set as quotations, not cards: the rule above them is the
+     same rule the services list uses, and the italic is the page's own serif
+     in its other voice. The score line is the one link — it is where the
+     rest of the reviews live. */
+  /* Five points, straight edges, no outline and no half-star machinery — the
+     rating is a whole number and the mark should read as a printed row of
+     stars rather than a widget. It sits on the score line's own baseline and
+     is measured in ems of it, a little under cap height, so it reads as the
+     end of that sentence rather than a badge parked beside it. */
+  .reviews-stars {
+    display: inline-block;
+    height: .64em;
+    width: auto;
+    margin-left: .55em;
+  }
+  .reviews-score {
+    margin: 0;
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-size: clamp(1.25rem, 1.9vw, 1.65rem);
+    line-height: 1.2;
+    color: var(--club);
+  }
+  .reviews-score a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: .08em;
+    transition: border-color .3s ease;
+  }
+  .reviews-score a:hover { border-bottom-color: var(--club); }
+  .reviews ul {
+    list-style: none;
+    margin: clamp(1.6rem, 2.8vw, 2.4rem) 0 0;
+    padding: clamp(1.5rem, 2.6vw, 2.2rem) 0 0;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem 3rem;
+    align-items: start;
+  }
+  .reviews blockquote { margin: 0; }
+  .reviews blockquote p {
+    margin: 0;
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-style: italic;
+    font-size: clamp(1.1rem, 1.4vw, 1.35rem);
+    line-height: 1.45;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+
+
+  /* ---------- contact ----------
+     This is the one thing on the page that has to work, so it stops behaving
+     like another run of copy and gets its own ground. The band is a shade
+     darker than the paper — a mount board — and the form sits on it as a sheet
+     of the page's own paper. That is the same relationship the work plates
+     have with their mounts, done in tone rather than a border, so the
+     separation from the services list is a change of surface, not just a gap.
+
+     The form itself is a ruled ledger: one field per row, the row's rule IS
+     the field's rule, labels held in a fixed column on the left. Same
+     construction as the services list above it, which is what stops a form
+     this dense from reading like a different website. */
+  .contact {
+    background: var(--board);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding-top: clamp(2.5rem, 4.1vw, 4.1rem);
+    /* Tighter under the button than over the heading, on purpose. The band
+       does not really end at this edge: the right-hand plant rises a long way
+       up through it from the footer below, so the two areas already run into
+       each other and the seam does not need holding open. This band is where
+       the page gives its height back, because the one below it cannot — the
+       plant band's height IS the left plant's height, and taking any of it
+       would have meant a smaller plant. Both edges are near their floor now;
+       past this the form starts to feel crowded rather than quiet. */
+    padding-bottom: clamp(1.6rem, 2.45vw, 2.5rem);
+    scroll-margin-top: clamp(.75rem, 2vh, 1.75rem);
+  }
+  .contact .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr);
+    gap: clamp(2rem, 4vw, 3.6rem);
+    align-items: start;
+  }
+  .contact h2 { font-size: clamp(1.85rem, 3vw, 2.5rem); line-height: 1.04; margin: 0 0 .9rem; }
+  .contact-lede { margin: 0 0 clamp(1.5rem, 2.8vw, 2.1rem); color: var(--ink-soft); max-width: 34ch; }
+
+  /* The number is the shortest route to a job, so it is the loudest thing on
+     this side. Everything else steps down from it. */
+  .contact-call {
+    display: block;
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-size: clamp(1.5rem, 2.3vw, 1.95rem);
+    line-height: 1.05;
+    color: var(--club);
+    text-decoration: none;
+  }
+  .contact-call:hover { color: #17301f; }
+  .contact-mail {
+    display: inline-block;
+    margin-top: .55rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: .12rem;
+  }
+  .contact-mail:hover { border-bottom-color: var(--club); }
+
+  .contact-meta {
+    margin: clamp(1.5rem, 2.6vw, 2rem) 0 0;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    gap: .5rem 0;
+    font-size: .9rem;
+  }
+  .contact-meta > div { display: grid; grid-template-columns: 6.25rem minmax(0, 1fr); gap: 1.25rem; }
+  .contact-meta dt {
+    font-size: .66rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-top: .2rem;
+  }
+  .contact-meta dd { margin: 0; color: var(--ink-soft); }
+  .contact-meta a { text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .contact-meta a:hover { color: var(--club); border-bottom-color: var(--club); }
+
+  /* ---------- the enquiry ledger ---------- */
+  .enquiry {
+    --pad: clamp(1.15rem, 2.1vw, 1.85rem);
+    /* The footer comes after this section in the document, so anything of its
+       that overhangs the seam paints on top — and the right-hand plant now
+       reaches high enough to cross this sheet's bottom corner. Lifting the
+       sheet a layer puts it in front. The board around it is left alone on
+       purpose: the sprig should still climb the margin, it just shouldn't
+       climb the form. */
+    position: relative;
+    z-index: 1;
+    background: var(--paper);
+    padding: clamp(.3rem, .8vw, .6rem) var(--pad) clamp(1.3rem, 2.1vw, 1.7rem);
+    box-shadow: 0 16px 38px -32px rgba(31, 61, 43, .6);
+  }
+  /* A file dragged anywhere over the sheet is a file meant for the form, so
+     the whole sheet is the target and it says so by lifting a hairline. */
+
+  /* Beside the copy the sheet needs no title of its own: the section heading
+     sits level with it and the form is plainly the other half of one spread.
+     Stacked, that heading has belonged to the phone number for half a screen
+     by the time the sheet arrives, and the first thing the sheet says for
+     itself is NAME — a field with no invitation in front of it. So where the
+     columns collapse it takes its own heading. Set in the label's voice and
+     ruled underneath, because a ledger's title is the line above the first
+     entry rather than a caption floating over the sheet. It is worded as the
+     next option after the number it now follows, not as a second welcome —
+     the lede already did the inviting, too far up the page to still be doing
+     it here. */
+  .enquiry-head { display: none; }
+
+  .row {
+    --rp-t: .85rem;
+    --rp-b: .9rem;
+    position: relative;
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr) 3.1rem;
+    gap: 0 1.35rem;
+    align-items: stretch;
+    padding: var(--rp-t) 0 var(--rp-b);
+    border-bottom: 1px solid var(--rule);
+    cursor: text;
+  }
+  /* The rule is what people aim at, so the rule has to be part of the field.
+     The row answers to the pointer before it is clicked. */
+  .row:hover { border-bottom-color: rgba(31, 61, 43, .34); }
+  /* The live field ticks itself in the margin. This is the focus indicator —
+     2px of club green against the paper, plus the label and the rule turning
+     with it — which is why the inputs can drop their own outline. */
+  .row::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--pad) / -2);
+    top: .55rem; bottom: .55rem;
+    width: 2px;
+    background: var(--club);
+    transform: scaleY(0);
+    transition: transform .3s cubic-bezier(.22, 1, .36, 1);
+  }
+  .row:focus-within::before { transform: scaleY(1); }
+  .row:focus-within { border-bottom-color: rgba(31, 61, 43, .55); }
+
+  .row-label {
+    cursor: pointer;
+    padding-top: .32rem;
+    font-size: .68rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    transition: color .25s ease;
+  }
+  .row:focus-within .row-label { color: var(--club); }
+
+  /* The field column holds the line itself and any error under it. The
+     "optional" annotation sits out in a third column — the right margin —
+     where it costs the row no height and every field ends on the same edge. */
+  .row-label { grid-column: 1; display: block; }
+  .row-field { grid-column: 2; min-width: 0; }
+  .opt {
+    grid-column: 3;
+    justify-self: end;
+    padding-top: .34rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: .82rem;
+    line-height: 1.4;
+    color: rgba(85, 99, 91, .62);
+  }
+
+  .row input, .row textarea {
+    font: inherit;
+    font-size: 1rem;            /* quieter than the page, and never below 16px,
+                                   which is what stops iOS zooming on focus */
+    line-height: 1.55;
+    color: var(--ink);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    width: 100%;
+    /* The field's box is grown to fill the whole row and the growth is taken
+       straight back off in margin, so the hit area covers every pixel between
+       one rule and the next without moving a single line of type. */
+    padding: var(--rp-t) 0 var(--rp-b);
+    margin: calc(var(--rp-t) * -1) 0 calc(var(--rp-b) * -1);
+  }
+  .row textarea {
+    display: block;
+    min-height: calc(4.4rem + var(--rp-t) + var(--rp-b));
+    resize: none;
+    overflow: hidden;
+  }
+  .row input:focus, .row textarea:focus { outline: none; }
+  .row input::placeholder, .row textarea::placeholder { color: rgba(85, 99, 91, .5); }
+  /* Chrome's autofill would otherwise put a blue slab through the paper. */
+  .row input:-webkit-autofill,
+  .row input:-webkit-autofill:hover,
+  .row input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--ink);
+    -webkit-box-shadow: 0 0 0 40px var(--paper) inset;
+    caret-color: var(--ink);
+  }
+
+  .row-error { margin: .3rem 0 0; font-size: .82rem; color: var(--warn); }
+  .row-error:empty { display: none; }
+  .row.is-bad { border-bottom-color: rgba(140, 63, 38, .55); }
+  .row.is-bad .row-label { color: var(--warn); }
+  .row.is-bad::before { background: var(--warn); transform: scaleY(1); }
+
+
+  /* Honeypot: off-screen rather than display:none, which the better bots skip. */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .send {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding-top: 1.35rem;
+  }
+  .send-text { flex: 1 1 20rem; min-width: 0; }
+  .send-consent { margin: 0; font-size: .82rem; color: var(--ink-soft); max-width: 42ch; }
+  .send-consent a { color: var(--club); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .form-note { margin: .45rem 0 0; font-size: .84rem; color: var(--warn); }
+  .form-note:empty { display: none; }
+  .form-note.is-quiet { color: var(--ink-soft); }
+
+  .submit {
+    flex: none;
+    font: inherit;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--club);
+    border: 1px solid var(--club);
+    border-radius: 0;
+    padding: .95rem 1.75rem;
+    cursor: pointer;
+    transition: background .25s ease, border-color .25s ease, opacity .25s ease;
+  }
+  .submit:hover { background: #17301f; border-color: #17301f; }
+  .submit[disabled] { opacity: .5; cursor: default; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .row::before, .row-label, .enquiry, .submit { transition: none; }
+  }
+
+  @media (max-width: 900px) {
+    .contact .wrap { grid-template-columns: 1fr; gap: clamp(1.8rem, 4vw, 2.4rem); }
+    .contact-lede { max-width: 48ch; }
+    .contact-meta > div { grid-template-columns: 5.75rem minmax(0, 1fr); gap: 1rem; }
+    .enquiry-head {
+      display: block;
+      margin: 0;
+      padding: .1rem 0 .85rem;
+      border-bottom: 1px solid var(--rule);
+      font-size: .68rem;
+      /* Same size, same tracking, same case as the labels under it, which is
+         the point — but at the labels' weight too it stopped being a heading
+         and became a row whose field had gone missing. 500 is the one step
+         the family is loaded at, and it is enough: still the label's voice,
+         now plainly the line that governs them rather than one of them. */
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--club);
+    }
+  }
+  /* Below this the ledger stays a ledger. The label column is the whole idea,
+     so it narrows rather than collapsing — a label stacked over an empty rule
+     is a form, a label held in a column beside its rule is a ledger, and the
+     second one is the reason this doesn't read like every other site's
+     contact page.
+
+     Three things move to make that fit. The sheet breaks out to the full
+     width of the screen and takes the page's own gutter as its padding, so
+     the form's label column lands on exactly the line the copy above it
+     starts on and one left edge runs the entire section. The labels step down
+     a size, which is what buys the column back. And the annotation leaves the
+     row entirely: it hangs under its own label in the margin, out of the
+     flow, so an optional field is the same height as a required one and the
+     rules stay evenly spaced down the sheet. */
+  @media (max-width: 600px) {
+    /* Every size on the page is a clamp whose floor was set for the desktop
+       column it lives in. On a phone the vw term drops out and every one of
+       them lands on that floor at once — a 30px section heading over 17px
+       copy in a 330px measure, which is the ratio a word processor gives you
+       and not the one a page does. One step down across the board.
+
+       The body size is the lever for most of it: the copy, the quotations
+       and the service descriptions all inherit it. */
+    body { font-size: 16px; }
+    .lede h2 { font-size: 1.55rem; letter-spacing: -.008em; }
+    .work h2, .services h2, .where h2, .reviews h2 {
+      font-size: 1.62rem;
+      margin-bottom: clamp(1.1rem, 4vw, 1.4rem);
+    }
+    .contact h2 { font-size: 1.62rem; }
+    .services h3 { font-size: 1.18rem; }
+    .reviews-score { font-size: 1.15rem; }
+    .contact-lede { font-size: 1rem; }
+    .work figcaption, .where figcaption { font-size: .88rem; }
+
+    .contact { padding-block: clamp(2.5rem, 8vw, 3.25rem); }
+
+    /* The meta list and the form share one label column and one label size,
+       so the two halves of the section read as a single ruled page. */
+    .contact-meta { font-size: .86rem; }
+    .contact-meta > div { grid-template-columns: minmax(max-content, 5.1rem) minmax(0, 1fr); gap: 1rem; }
+    .contact-meta dt { font-size: .62rem; letter-spacing: .16em; }
+    .contact-meta dd { text-wrap: balance; }
+
+    /* Full bleed to the screen edge, and that is where it stopped reading as
+       a separate thing. Paper on board is a two-shade difference worth about
+       nine values; at desktop the sheet's shadow and its inset margins carry
+       the rest of the separation, and on mobile both were taken away — so the
+       whole band, heading and fields, went flat.
+
+       The shadow comes back (pulled to the top edge, where the sheet meets
+       the board) and the two seams are cut in the club green rather than the
+       hairline rule, so the edge of the sheet is a line you can actually see.
+       The extra top padding is what makes it read as a sheet laid on the
+       board rather than a rule drawn across it. */
+    .enquiry {
+      --pad: 1.5rem;              /* the page gutter, exactly */
+      margin-inline: -1.5rem;     /* .wrap is 100% - 3rem, so this is the screen edge */
+      margin-top: clamp(1.6rem, 5vw, 2.2rem);
+      border-top: 1px solid rgba(31, 61, 43, .34);
+      border-bottom: 1px solid rgba(31, 61, 43, .34);
+      box-shadow: 0 -10px 24px -20px rgba(31, 61, 43, .55);
+      padding-top: 1.1rem;
+      padding-bottom: 1.6rem;
+    }
+
+    /* The labels stepped down a size here, so the sheet's own heading steps
+       with them — it is the same voice, and a heading left at the wider
+       tracking would read as a different one. */
+    .enquiry-head { font-size: .62rem; letter-spacing: .16em; padding-bottom: .95rem; }
+
+    .row {
+      --rp-t: .95rem;
+      --rp-b: 1rem;
+      grid-template-columns: minmax(max-content, 5.1rem) minmax(0, 1fr);
+      gap: 0 1rem;
+    }
+    .row-label { grid-column: 1; grid-row: 1; font-size: .62rem; letter-spacing: .16em; padding-top: .38rem; }
+    .row-field { grid-column: 2; grid-row: 1; }
+    /* Out of the flow, in the label's own column. The italic serif goes with
+       it: at this size an italic beside a tracked label reads louder than the
+       label, which is backwards. Same voice as the label, one step down. */
+    .opt {
+      position: absolute;
+      grid-column: auto;          /* without this the abspos box takes its
+                                     containing block from the desktop layout's
+                                     third column, off at the right edge */
+      grid-row: auto;
+      justify-self: start;
+      left: 0;
+      top: calc(var(--rp-t) + 1.3rem);
+      padding-top: 0;
+      font-family: var(--sans);
+      font-style: normal;
+      font-size: .58rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(85, 99, 91, .6);
+    }
+
+    /* The message is the letter, not a line of the ledger, so it takes the
+       whole sheet. Everything above it stays ruled and short, which is what
+       makes the one wide field read as the point of the page rather than as
+       a row that failed to line up. */
+    .row-message { grid-template-columns: minmax(0, 1fr); row-gap: .15rem; }
+    .row-message .row-label { grid-column: 1; grid-row: 1; padding-top: 0; }
+    .row-message .row-field { grid-column: 1; grid-row: 2; }
+    .row-message textarea {
+      margin-top: 0;
+      padding-top: .4rem;
+      min-height: calc(6.2rem + .4rem + var(--rp-b));
+    }
+
+
+    .send { padding-top: 1.35rem; }
+    .send-text { flex-basis: 100%; }
+    .send-consent { max-width: none; }
+    .submit { width: 100%; padding-block: 1.05rem; }
+  }
+
+  /* ---------- confirmation overlay ----------
+     The send is a small ceremony rather than a page change: the site dims
+     behind a card of the same paper stock, and the card assembles itself in
+     order — mark, mount line, rule, headline, words. Every stage is a
+     transition on .is-in, so one class runs the whole sequence and reduced
+     motion can flatten it by zeroing the durations. */
+  .hello {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    visibility: hidden;
+  }
+  .hello.is-open { visibility: visible; }
+
+  .hello-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(14, 24, 17, .72);
+    -webkit-backdrop-filter: blur(7px) saturate(.85);
+    backdrop-filter: blur(7px) saturate(.85);
+    opacity: 0;
+    transition: opacity .5s ease;
+    cursor: pointer;
+  }
+  .hello.is-in .hello-scrim { opacity: 1; }
+  .hello.is-out .hello-scrim { opacity: 0; transition-duration: .34s; }
+
+  .hello-card {
+    position: relative;
+    width: min(500px, 100%);
+    padding: clamp(2.6rem, 5vw, 3.6rem) clamp(1.8rem, 4vw, 3rem) clamp(2.2rem, 4vw, 2.8rem);
+    background: var(--paper);
+    text-align: center;
+    box-shadow: 0 40px 80px -40px rgba(10, 18, 12, .7);
+    opacity: 0;
+    transform: translateY(20px) scale(.972);
+    transition: opacity .5s ease .06s, transform .68s cubic-bezier(.22, 1, .36, 1) .06s;
+  }
+  .hello.is-in .hello-card { opacity: 1; transform: none; }
+  .hello.is-out .hello-card {
+    opacity: 0;
+    transform: translateY(10px) scale(.99);
+    transition: opacity .28s ease, transform .34s cubic-bezier(.22, 1, .36, 1);
+  }
+  /* the same mount line the work plates carry, drawn in a beat later */
+  .hello-card::after {
+    content: "";
+    position: absolute;
+    inset: clamp(9px, 1vw, 14px);
+    border: 1px solid var(--rule);
+    opacity: 0;
+    transition: opacity .6s ease .34s;
+    pointer-events: none;
+  }
+  .hello.is-in .hello-card::after { opacity: 1; }
+
+  .hello-mark {
+    display: block;
+    opacity: 0;
+    transform: translateY(7px);
+    transition: opacity .55s ease .2s, transform .6s cubic-bezier(.22, 1, .36, 1) .2s;
+  }
+  .hello.is-in .hello-mark { opacity: 1; transform: none; }
+  .hello-mark img { width: 46px; height: auto; margin: 0 auto; }
+
+  /* a hairline that draws itself out from the centre */
+  .hello-rule {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 1.5rem 0 1.6rem;
+    background: var(--rule);
+    transform: scaleX(0);
+    transition: transform .85s cubic-bezier(.22, 1, .36, 1) .36s;
+  }
+  .hello.is-in .hello-rule { transform: scaleX(1); }
+
+  /* each word rides up out of its own clipped band */
+  .hello-title {
+    margin: 0;
+    font-family: var(--didone);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-size: clamp(2.1rem, 5vw, 3rem);
+    line-height: 1.02;
+    color: var(--club);
+  }
+  .hello-title .band { display: inline-block; overflow: hidden; vertical-align: bottom; padding: 0 .06em; }
+  .hello-title .band > span {
+    display: inline-block;
+    transform: translateY(115%);
+    transition: transform .78s cubic-bezier(.22, 1, .36, 1);
+  }
+  .hello.is-in .hello-title .band > span { transform: none; }
+  .hello.is-in .hello-title .band:nth-child(1) > span { transition-delay: .46s; }
+  .hello.is-in .hello-title .band:nth-child(2) > span { transition-delay: .53s; }
+
+  .hello-body {
+    margin: 1.1rem auto 0;
+    max-width: 34ch;
+    color: var(--ink-soft);
+    opacity: 0;
+    transform: translateY(9px);
+    transition: opacity .6s ease .66s, transform .7s cubic-bezier(.22, 1, .36, 1) .66s;
+  }
+  .hello.is-in .hello-body { opacity: 1; transform: none; }
+  .hello-body a { color: var(--club); text-decoration: none; border-bottom: 1px solid var(--rule); }
+
+  .hello-close {
+    margin-top: 1.9rem;
+    font: inherit;
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--club);
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    padding: 0 0 .3rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .5s ease .84s, border-color .3s ease;
+  }
+  .hello.is-in .hello-close { opacity: 1; }
+  .hello-close:hover { border-bottom-color: var(--club); }
+  .hello :focus-visible { outline: 2px solid var(--club); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hello-scrim, .hello-card, .hello-card::after, .hello-mark,
+    .hello-rule, .hello-title .band > span, .hello-body, .hello-close {
+      transition-duration: .001s !important;
+      transition-delay: 0s !important;
+    }
+    .hello-card { transform: none; }
+    .hello-rule { transform: scaleX(1); }
+    .hello-title .band > span { transform: none; }
+  }
+
+  /* ---------- footer ---------- */
+  .footer {
+    position: relative;
+    background: var(--paper);
+    /* was a small buffer under the enquiry band. The left plant already stood
+       about six pixels proud of the band it sits in, so all this was doing was
+       keeping those six pixels off the seam — and the right plant crosses the
+       same seam by eighty. */
+    padding-top: 0;
+  }
+  .plants-wrap {
+    position: relative;
+    aspect-ratio: 1612 / 605;   /* holds the band's height on its own, so the
+                                   wordmark can never fall onto the footer bar */
+    /* Ratio alone is a trap at the narrow end: at 390px it resolves to about
+       146px, and the whole footer — plants, wordmark and all — collapses into
+       a strip you scroll past without registering that it was there. The
+       floor keeps the band a band. The children are all absolute, so this is
+       the only thing holding the height either way. */
+    min-height: clamp(8.5rem, 38vw, 13rem);
+  }
+  .plant {
+    position: absolute;
+    bottom: 0;
+    display: block;
+    height: auto;
+    pointer-events: none;
+    user-select: none;
+  }
+  .plant-left  { left: -0.5%; width: 53%; }
+  .plant-right { right: 2.8%; width: auto; height: 118%; }
+  .wordmark {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 2.5vw .5vw;
+    margin: 0;
+    font-family: var(--mark);
+    font-weight: 600;          /* the stroke the van is painted at, measured
+                                  off the photograph against its cap height */
+    font-size: 23.5vw;         /* a geometric sets narrower than the didone did,
+                                  so the size comes up to hold the same band */
+    letter-spacing: 0;
+    line-height: .92;
+    /* The letters are capitals, so everything below their baseline in this
+       line box is empty descender space — and at 23.5vw that space is about
+       90px of it. Unclipped it counts toward the page's scroll height even
+       though it draws nothing, which is the extra you could scroll into past
+       the footer bar. Clipped here it costs the page nothing and takes no ink
+       with it: the band is nearly twice the height of the line box, so the
+       clip edge sits far outside anything that prints. */
+    overflow: clip;
+    /* The one blue left on the page. It is not a colour choice so much as a
+       photograph of one: this is the wordmark as it is signwritten on the
+       van, in the blue it is painted in, so it holds its own value rather
+       than taking the page's. Everything else went back to the green. */
+    color: #005EA3;
+  }
+  .wordmark span { display: block; }
+  .footer-bar {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2.5rem 1.15rem;
+    border-top: 1px solid var(--rule);
+    font-size: .68rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--club);
+  }
+  .footer-bar a { text-decoration: none; }
+  .footer-bar .mid { display: flex; align-items: center; gap: 2rem; }
+  .footer-bar .right { justify-self: end; }
+  .mark { width: 26px; height: auto; display: block; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 820px) {
+    /* A full screen of photograph on a phone is a wall, not an opening: the
+       page looks like it ends at the fold and the only thing that says
+       otherwise is the button. Three-quarters of the small viewport keeps the
+       whole lockup, the headline and the tagline exactly where they are —
+       every row here is auto-height, so this is a floor the content can push
+       back against and never a squeeze — and gives up the last quarter to the
+       top of the sentence below, which is what tells you to keep going.
+       Both photo layers are `cover` with identical geometry, so a shorter box
+       crops them, never stretches them, and the cutout stays registered on
+       the photograph to the pixel. */
+    .hero { min-height: 75svh; }
+    .hero-top { grid-template-columns: 1fr; padding: 1.6rem 1.5rem 0; }
+    .brand { grid-column: 1; }
+    /* the headline stacks into two lines here, so the button needs more room */
+    .hero-cta { top: clamp(3.5rem, 12vh, 6rem); padding: .95rem 1.9rem; font-size: .7rem; }
+    .hero-words { flex-direction: column; justify-content: center; gap: .6rem; padding: 0 1.5rem 8vh; }
+    .lede .wrap { grid-template-columns: 1fr; row-gap: 1.1rem; }
+    /* one column, a different width every screen — no hand-set break survives
+       that, so the sentence goes back to wrapping for itself */
+    .lede h2 br { display: none; }
+    /* Stacked, the pair goes between the statement and the copy rather than
+       after it: the sentence names them, so the faces should answer it before
+       eight lines of prose do, and the reader meets two people before they
+       are asked to read anything.
+
+       The statement wrapper dissolves so its children become grid items in
+       their own right and can be ordered around the pair. Order is visual
+       only — the reading order stays statement, copy, captions. */
+    .lede-statement { display: contents; }
+    .lede-statement h2 { order: 1; }
+    .crew { order: 2; margin: .45rem 0 .3rem; }
+    .lede-statement p { order: 3; }
+    /* the row gap is the spacing now; the margins would double it */
+    .lede-statement h2 + p, .lede p + p { margin-top: 0; }
+    .crew { gap: 1.1rem; max-width: 26rem; }
+    /* the plate becomes a thumbnail in the margin, name and description
+       stacked beside it — still a list with pictures, not a stack of cards */
+    .services li { grid-template-columns: 5.5rem minmax(0, 1fr); gap: .35rem 1.1rem; }
+    .services .pic { grid-row: 1 / span 2; }
+    .services li > h3, .services li > p { grid-column: 2; }
+    /* the places first, the map full width underneath them */
+    .where .wrap { grid-template-columns: 1fr; row-gap: clamp(1.6rem, 5vw, 2.2rem); }
+    .reviews ul { grid-template-columns: 1fr; gap: 1.8rem; }
+    .footer-bar { grid-template-columns: 1fr; justify-items: center; text-align: center; padding-inline: 1.5rem; }
+    .footer-bar .right { justify-self: center; }
+    .wordmark { padding: 0 3vw; }
+  }
+  /* two plates to the measure instead of three — the line is the same line */
+  @media (max-width: 980px) {
+    .work ul { --g: 1.1rem; --base: calc((100% - var(--g)) / 2); }
+  }
+  /* One at a time, swiped, instead of three tall photographs stacked into a
+     long vertical scroll. The card is narrower than the screen on purpose:
+     the slice of the next one showing past the edge is what says "gallery"
+     before anyone has touched it. Dots underneath carry the same message and
+     give it a tap target. */
+  @media (max-width: 620px) {
+    .work-wrap { width: 100%; }
+    .work h2 { padding-inline: 1.5rem; }
+    .work ul {
+      align-items: start;
+      gap: .85rem;
+      /* snapped hard and centred: one plate at a time is the whole point here */
+      scroll-snap-type: x mandatory;
+      padding: .35rem 1.5rem 1.15rem;
+      margin-inline: 0;
+    }
+    .work li { flex: 0 0 88%; scroll-snap-align: center; }
+    .work li .plate { aspect-ratio: 4 / 5; }
+    .work figcaption { margin-top: .8rem; }
+    .rail-dots { margin-top: .35rem; }
+
+    /* The thumbnail in the margin is a tablet arrangement. On a phone it
+       shrinks to a stamp beside a column three words wide, and four of them
+       down the page read as a spreadsheet. The picture takes the whole
+       measure instead, as a band above its own heading — the same shape the
+       work plates have, which is what the two sections are meant to share. */
+    .services li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: .8rem;
+      padding: 1.5rem 0 1.7rem;
+    }
+    .services .pic { grid-row: auto; grid-column: 1; aspect-ratio: 16 / 9; width: 100%; }
+    .services li > h3, .services li > p { grid-column: 1; }
+
+    /* Three quotations stacked run to most of a screen each and nobody
+       reaches the third. Swiped, they are the same object the work plates
+       are: one card at a time with the next one showing past the edge. */
+    .reviews ul {
+      display: flex;
+      align-items: start;
+      gap: 1.1rem;
+      margin-top: clamp(1.2rem, 4vw, 1.6rem);
+      padding: clamp(1.2rem, 4vw, 1.6rem) 0 .3rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .reviews ul::-webkit-scrollbar { display: none; }
+    .reviews li { flex: 0 0 84%; min-width: 0; scroll-snap-align: center; }
+    /* A rail with no edge to it reads as a paragraph that got cut off. The
+       dots say there is more and give a thumb somewhere to land; the
+       part-visible next card says which way. */
+    #review-dots { display: flex; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rail-dots button::before { transition: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <img class="hero-fg" src="titleimageoverlay.png" alt="" aria-hidden="true">
+  <div class="hero-top">
+    <a class="brand" href="#top" id="top">
+      <img src="data:image/png;base64,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" alt="" width="64" height="58">
+      <span class="brand-name">MACAW</span>
+      <span class="brand-sub">Landscaping</span>
+    </a>
+  </div>
+  <div class="hero-words" aria-label="Grounds, well kept">
+    <span>GROUNDS</span>
+    <span>WELL KEPT</span>
+  </div>
+  <a class="hero-cta" href="#contact">Get in touch</a>
+  <p class="hero-tag">Garden care, planting and stonework for homes across Victoria and the South Island.</p>
+</header>
+
+<main>
+  <section class="lede">
+    <div class="wrap">
+      <!-- Statement and copy are one column; the pair is the other. -->
+      <div class="lede-statement">
+        <h2>A small crew that plants, prunes, <br>builds and looks after gardens <br>in and around Victoria.</h2>
+        <p>Macaw is Santi and Rhys. We've been keeping gardens on the South Island since 2019, and we're the ones who turn up — there's no crew we send instead. We quote in writing before we start, we keep the site tidy while we're on it, and we answer the phone.</p>
+        <p>Most of the work is regular maintenance for homes in Victoria, Oak Bay and Saanich, with planting and small stonework jobs in between. Most of our clients found us through a neighbour.</p>
+      </div>
+      <!-- PLACEHOLDER: the trade under each name is assumed. Swap both
+           lines once Santi says who actually does what. -->
+      <ul class="crew">
+        <li><figure>
+          <img src="portrait-santi.webp" width="440" height="712" alt="Santi, one of the two who run Macaw Landscaping" loading="lazy" decoding="async">
+          <figcaption><span class="crew-name">Santi</span>Planting, design and quoting.</figcaption>
+        </figure></li>
+        <li><figure>
+          <img src="portrait-rhys.webp" width="440" height="712" alt="Rhys, one of the two who run Macaw Landscaping" loading="lazy" decoding="async">
+          <figcaption><span class="crew-name">Rhys</span>Stonework, walls and paths.</figcaption>
+        </figure></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="work" aria-labelledby="work-h">
+    <div class="work-wrap">
+      <h2 id="work-h">Recent work</h2>
+      <ul>
+        <li><figure>
+          <button class="plate" type="button" aria-label="Enlarge: Oak Bay — patio, steps and new beds">
+            <img src="work-1.jpg" alt="Paver patio and new planting beds behind a house in Oak Bay" loading="lazy" decoding="async">
+          </button>
+          <figcaption>Oak Bay — patio, steps and new beds</figcaption>
+        </figure></li>
+        <li><figure>
+          <button class="plate" type="button" aria-label="Enlarge: Fairfield — front garden replant">
+            <img src="work-2.jpg" alt="Front garden with drought-tolerant planting in Fairfield" loading="lazy" decoding="async">
+          </button>
+          <figcaption>Fairfield — front garden replant</figcaption>
+        </figure></li>
+        <li><figure>
+          <button class="plate" type="button" aria-label="Enlarge: Saanich — cleanup and gravel path">
+            <img src="work-3.jpg" alt="Cleared and re-graded backyard in Saanich" loading="lazy" decoding="async">
+          </button>
+          <figcaption>Saanich — cleanup and gravel path</figcaption>
+        </figure></li>
+        <li><figure>
+          <button class="plate" type="button" aria-label="Enlarge: Gordon Head — rock bed and new planting">
+            <img src="work-4.jpg" alt="Rock bed with new planting along a front walk in Gordon Head" loading="lazy" decoding="async">
+          </button>
+          <figcaption>Gordon Head — rock bed and new planting</figcaption>
+        </figure></li>
+        <li><figure>
+          <button class="plate" type="button" aria-label="Enlarge: James Bay — bamboo out, lawn back">
+            <img src="work-5.jpg" alt="Front lawn in James Bay after bamboo removal and re-seeding" loading="lazy" decoding="async">
+          </button>
+          <figcaption>James Bay — bamboo out, lawn back</figcaption>
+        </figure></li>
+        <li><figure>
+          <button class="plate" type="button" aria-label="Enlarge: Cadboro Bay — mulched beds and hedge trim">
+            <img src="work-6.jpg" alt="Freshly mulched garden beds and a trimmed hedge in Cadboro Bay" loading="lazy" decoding="async">
+          </button>
+          <figcaption>Cadboro Bay — mulched beds and hedge trim</figcaption>
+        </figure></li>
+      </ul>
+      <!-- filled in by the script, so the count always matches the plates -->
+      <div class="rail-dots" id="work-dots"></div>
+    </div>
+  </section>
+
+  <section class="services" aria-labelledby="services-h">
+    <div class="wrap">
+      <h2 id="services-h">What we do</h2>
+      <ul>
+        <li>
+          <span class="pic"><img src="service-maintenance.jpg" alt="" loading="lazy" decoding="async"></span>
+          <h3>Garden maintenance</h3>
+          <p>Mowing, edging, pruning, weeding and bed care on a weekly, fortnightly or monthly visit. We adjust the schedule to the season, not the calendar.</p>
+        </li>
+        <li>
+          <span class="pic"><img src="service-planting.jpg" alt="" loading="lazy" decoding="async"></span>
+          <h3>Planting and garden design</h3>
+          <p>New beds, borders and refreshes of tired ones. We favour plants that suit a wet winter and a dry summer, so the garden holds up without constant watering.</p>
+        </li>
+        <li>
+          <span class="pic"><img src="service-stone.jpg" alt="" loading="lazy" decoding="async"></span>
+          <h3>Patios, paths and retaining walls</h3>
+          <p>Paver patios, gravel and flagstone paths, small retaining walls and steps. Built to drain properly and stay level.</p>
+        </li>
+        <li>
+          <span class="pic"><img src="service-cleanup.jpg" alt="" loading="lazy" decoding="async"></span>
+          <h3>Cleanups and hauling</h3>
+          <p>Spring and fall cleanups, overgrown lot resets, hedge reductions and green-waste removal. One visit, everything gone.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="where" aria-labelledby="where-h">
+    <div class="wrap">
+      <div class="where-copy">
+        <h2 id="where-h">Where we work</h2>
+        <p>Victoria, Oak Bay, Saanich, Esquimalt, View Royal, Langford, Colwood, Sidney and the Saanich Peninsula. Further up-island by arrangement for larger projects.</p>
+        <p class="where-ask"><a href="#contact">Just outside it? Ask anyway.</a></p>
+      </div>
+      <figure>
+        <span class="pic">
+          <img src="service-area.png"
+               width="994" height="626"
+               alt="Map of the South Island with the service area marked as a circle around Victoria, reaching Cordova Bay and Gordon Head in the north, Ten Mile Point and Oak Bay in the east, and View Royal and Esquimalt in the west."
+               loading="lazy" decoding="async">
+        </span>
+        <figcaption>Core area — Victoria out to Cordova Bay, Gordon Head and Ten Mile Point</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="reviews" aria-labelledby="reviews-h">
+    <div class="wrap">
+      <h2 id="reviews-h">Trusted by clients</h2>
+      <p class="reviews-score">
+        <a href="https://www.google.com/maps/search/Macaw+Landscaping+ltd+Victoria+BC" target="_blank" rel="noopener">5 out of 5 on Google</a>
+        <svg class="reviews-stars" viewBox="0 0 119.02 18.09" aria-hidden="true" fill="currentColor"><path d="M9.51 0L11.86 6.76L19.02 6.91L13.31 11.24L15.39 18.09L9.51 14L3.63 18.09L5.71 11.24L0 6.91L7.16 6.76Z M34.51 0L36.86 6.76L44.02 6.91L38.31 11.24L40.39 18.09L34.51 14L28.63 18.09L30.71 11.24L25 6.91L32.16 6.76Z M59.51 0L61.86 6.76L69.02 6.91L63.31 11.24L65.39 18.09L59.51 14L53.63 18.09L55.71 11.24L50 6.91L57.16 6.76Z M84.51 0L86.86 6.76L94.02 6.91L88.31 11.24L90.39 18.09L84.51 14L78.63 18.09L80.71 11.24L75 6.91L82.16 6.76Z M109.51 0L111.86 6.76L119.02 6.91L113.31 11.24L115.39 18.09L109.51 14L103.63 18.09L105.71 11.24L100 6.91L107.16 6.76Z"/></svg>
+      </p>
+      <ul>
+        <li>
+          <blockquote><p>Macaw Landscaping has been doing gardening work for us for approximately a year, and we are very happy with the various jobs they have been doing for us.</p></blockquote>
+        </li>
+        <li>
+          <blockquote><p>So pleased with the service! They did a great job, were so easy to get along with and went out of their way to make sure we were happy with the mulching of our garden beds! Highly recommend.</p></blockquote>
+        </li>
+        <li>
+          <blockquote><p>I was lucky enough to have the Macaw team visit my neighbourhood this summer. From beginning to end super professional. Would highly recommend.</p></blockquote>
+        </li>
+      </ul>
+      <!-- Only ever shown where the list is a rail. Filled by the script, so
+           the count always matches the quotations. -->
+      <div class="rail-dots" id="review-dots"></div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-h">
+    <div class="wrap">
+      <div class="contact-info">
+        <h2 id="contact-h">Get in touch</h2>
+        <p class="contact-lede">Tell us about the property and what you have in mind. We read everything that comes in and reply within two business days.</p>
+        <!-- PLACEHOLDER: real phone + email go here. The JS reads the address
+             off #mail-link, so the fallback message stays correct on its own. -->
+        <a class="contact-call" href="tel:+12505550142">(250) 555-0142</a>
+        <a class="contact-mail" id="mail-link" href="mailto:hello@macawlandscaping.ca">hello@macawlandscaping.ca</a>
+        <dl class="contact-meta">
+          <div><dt>Hours</dt><dd>Monday to Saturday, 7am to 5pm</dd></div>
+          <div><dt>Based in</dt><dd>Victoria, BC</dd></div>
+          <div><dt>Elsewhere</dt><dd><a href="https://instagram.com/macawlandscaping" rel="noopener">Instagram</a></dd></div>
+        </dl>
+      </div>
+
+      <!-- PLACEHOLDER: swap FORMSPREE_ID for the real form id, here and in
+           _next below. Until then the form validates but cannot send. -->
+      <!-- No novalidate here on purpose: with JS off the browser's own checks
+           are the only ones running. The script turns them off for itself. -->
+      <form class="enquiry" id="contact-form" action="https://formspree.io/f/FORMSPREE_ID" method="POST" enctype="multipart/form-data">
+        <!-- Without JS the browser posts natively and Formspree redirects to
+             thanks.html, which is what makes the submission countable in
+             analytics. With JS we stay on the page and mark the same
+             conversion ourselves. -->
+        <input type="hidden" name="_next" value="https://macawlandscaping.ca/thanks.html">
+        <input type="hidden" name="_subject" value="New enquiry — macawlandscaping.ca">
+
+        <!-- Honeypot. Formspree drops anything with _gotcha filled in; the JS
+             path checks it too, so both routes are covered. -->
+        <div class="hp" aria-hidden="true">
+          <label for="_gotcha">Leave this field empty</label>
+          <input id="_gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <!-- Time trap: stamped on load, read on submit. It only condemns a
+             submission nothing on the form was ever touched for — see the
+             script. -->
+        <input id="loaded-at" name="_loaded" type="hidden" value="">
+
+        <!-- Only ever shown where the contact grid has collapsed into one
+             column and the sheet has nothing above it to explain itself. -->
+        <p class="enquiry-head">Or send a message</p>
+
+        <div class="row">
+          <label class="row-label" for="name">Name</label>
+          <div class="row-field"><input id="name" name="name" type="text" autocomplete="name" autocapitalize="words" required aria-required="true" aria-describedby="err-name">
+            <p class="row-error" id="err-name"></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="row-label" for="email">Email</label>
+          <div class="row-field"><input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" required aria-required="true" aria-describedby="err-email">
+            <p class="row-error" id="err-email"></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="row-label" for="phone">Phone</label>
+          <div class="row-field"><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="err-phone">
+            <p class="row-error" id="err-phone"></p>
+          </div>
+          <span class="opt">optional</span>
+        </div>
+
+        <div class="row">
+          <label class="row-label" for="address">Property</label>
+          <div class="row-field"><input id="address" name="address" type="text" autocomplete="street-address" placeholder="Street and neighbourhood is plenty" data-ph-narrow="Street and area">
+          </div>
+          <span class="opt">optional</span>
+        </div>
+
+        <div class="row row-message">
+          <label class="row-label" for="details">Message</label>
+          <div class="row-field"><textarea id="details" name="details" rows="3" required aria-required="true" aria-describedby="err-details" placeholder="A patio, an overgrown hedge, a garden that needs a fortnightly visit…"></textarea>
+            <p class="row-error" id="err-details"></p>
+          </div>
+        </div>
+
+
+        <div class="send">
+          <div class="send-text">
+            <p class="send-consent">We use what you send here to reply to you and nothing else. See the <a href="privacy.html">privacy policy</a>.</p>
+            <p class="form-note" id="form-note" role="status" aria-live="polite"></p>
+          </div>
+          <button class="submit" type="submit" id="submit">Send message</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="plants-wrap">
+    <img class="plant plant-left" src="halftonedplantleft.webp" alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="plant plant-right" src="halftonedplantright.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <h2 class="wordmark" aria-label="Macaw"><span>M</span><span>A</span><span>C</span><span>A</span><span>W</span></h2>
+  </div>
+  <div class="footer-bar">
+    <span>© Macaw Landscaping 2026</span>
+    <span class="mid"><a href="privacy.html">Privacy policy</a><img class="mark" src="data:image/png;base64,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" alt="" aria-hidden="true"><a href="https://instagram.com/macawlandscaping" rel="noopener">Instagram</a></span>
+    <a class="right" href="https://desustudio.com" rel="noopener">Site by Desu Studio</a>
+  </div>
+</footer>
+
+<div class="hello" id="hello" role="dialog" aria-modal="true" aria-labelledby="hello-title" aria-hidden="true">
+  <div class="hello-scrim" id="hello-scrim"></div>
+  <div class="hello-card" tabindex="-1" id="hello-card">
+    <!-- the macaw mark is cloned in from the footer so the file carries it once -->
+    <span class="hello-mark" id="hello-mark" aria-hidden="true"></span>
+    <span class="hello-rule" aria-hidden="true"></span>
+    <h2 class="hello-title" id="hello-title"><span class="band"><span>Thank</span></span> <span class="band"><span>you.</span></span></h2>
+    <p class="hello-body" id="hello-body">Your message is with us. We read every one, and we’ll come back to you within two business days.</p>
+    <button class="hello-close" type="button" id="hello-close">Back to the site</button>
+  </div>
+</div>
+
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Recent work" aria-hidden="true">
+  <div class="viewer-scrim"></div>
+  <div class="viewer-frame"><img alt=""><img alt=""></div>
+  <div class="viewer-caption">
+    <p></p>
+    <div class="viewer-ticks">
+      <button type="button" aria-label="Show photo 1"><span></span></button>
+      <button type="button" aria-label="Show photo 2"><span></span></button>
+      <button type="button" aria-label="Show photo 3"><span></span></button>
+      <button type="button" aria-label="Show photo 4"><span></span></button>
+      <button type="button" aria-label="Show photo 5"><span></span></button>
+      <button type="button" aria-label="Show photo 6"><span></span></button>
+    </div>
+  </div>
+  <button class="viewer-peek viewer-peek-prev" type="button" aria-label="Previous photo"><span><img alt=""></span></button>
+  <button class="viewer-peek viewer-peek-next" type="button" aria-label="Next photo"><span><img alt=""></span></button>
+  <button class="viewer-close" type="button" aria-label="Close"><span></span></button>
+</div>
+
+<script>
+  /* ---- Page scroll lock ----
+     The viewer and the confirmation card both freeze the page while they are
+     up. Locking is easy; the failure is never unlocking, and a page stuck at
+     overflow:hidden looks exactly like a page whose footer will not scroll
+     into view. So the lock is owned here, released by name, and swept by a
+     watchdog that puts it back the moment nothing is actually open. */
+  window.lockScroll = function () { document.body.style.overflow = 'hidden'; };
+  window.unlockScroll = function () { document.body.style.overflow = ''; };
+  (function () {
+    function openOverlays() {
+      return document.querySelectorAll('.viewer.is-open, .hello.is-open').length;
+    }
+    setInterval(function () {
+      if (!openOverlays() && document.body.style.overflow === 'hidden') unlockScroll();
+    }, 800);
+    /* restoring from the back/forward cache must never restore the lock */
+    addEventListener('pageshow', function () { if (!openOverlays()) unlockScroll(); });
+  })();
+</script>
+
+<script>
+  /* ---- Hero depth: the cutout bushes and the photo drift apart as you scroll ---- */
+  (function () {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Travel budgets in px, quoted at full height. Each stays well inside the
+    // bleed that --zoom provides ((zoom-1)/2 * heroHeight) — but that bleed is
+    // a fraction of the height, so it shrinks with the hero while a fixed
+    // budget would not. A three-quarter-height hero on a phone has about 48px
+    // of bleed to spend and BG alone wants 55. So the budgets are quoted for a
+    // tall hero and scaled down under one; k is capped at 1 so nothing here
+    // moves at the sizes these numbers were set against.
+    const BG = 55;     // photo sinks — the far layer, moves least against the page
+    const FG = -48;    // bushes rise — the near layer
+    const WORDS = 190; // headline hangs back, so the bushes overtake it on screen
+    const TAG = 26;    // tagline drifts gently, staying legible above the bushes
+    const FULL = 860;  // the height the four numbers above were judged at
+
+    let ticking = false;
+
+    function frame() {
+      ticking = false;
+      const h = hero.offsetHeight || 1;
+      const k = Math.min(1, h / FULL);
+      // 0 at the top of the page, 1 once the hero has scrolled fully past.
+      const p = Math.min(Math.max(window.scrollY / h, 0), 1);
+      const ease = p * (2 - p);   // ease-out, so the separation opens smoothly
+
+      hero.style.setProperty('--bg-shift', (BG * k * ease).toFixed(2) + 'px');
+      hero.style.setProperty('--fg-shift', (FG * k * ease).toFixed(2) + 'px');
+      hero.style.setProperty('--words-shift', (WORDS * k * ease).toFixed(2) + 'px');
+      hero.style.setProperty('--tag-shift', (TAG * k * ease).toFixed(2) + 'px');
+      hero.style.setProperty('--fg-grow', (1 + 0.035 * ease).toFixed(4));
+    }
+
+    function onScroll() {
+      if (!ticking) { ticking = true; requestAnimationFrame(frame); }
+    }
+
+    frame();
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+  })();
+
+</script>
+
+<!-- Kept in its own block on purpose. The contact form is the only thing on
+     this page that has to work; a throw in the hero or the viewer must not be
+     able to take it with it. -->
+<script>
+  /* ---- Contact form: validate, then send without leaving the page ---- */
+  (function () {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+
+    const note      = document.getElementById('form-note');
+    const sendBtn   = document.getElementById('submit');
+    const SEND_LABEL = sendBtn ? sendBtn.textContent : 'Send message';
+
+    /* One source of truth for the address we tell people to fall back to. */
+    const mailLink = document.getElementById('mail-link');
+    const MAIL = mailLink ? mailLink.textContent.trim() : '';
+
+    /* Stamp the load time for the trap. Bots that post the form straight from
+       the markup never run this, so an empty stamp is a fail too. */
+    const stamp = document.getElementById('loaded-at');
+    if (stamp) stamp.value = String(Date.now());
+    const MIN_FILL_MS = 2500;
+
+    /* JS is running, so our messages take over from the browser's bubbles. */
+    form.noValidate = true;
+
+    /* A placeholder has no room to wrap: past the end of the field it is just
+       cut off mid-word, which looks like a bug. Fields that want the roomier
+       line carry a short one too, and the viewport picks. */
+    const narrow = matchMedia('(max-width: 440px)');
+    function pickPlaceholders() {
+      form.querySelectorAll('[data-ph-narrow]').forEach(el => {
+        if (!el.dataset.phWide) el.dataset.phWide = el.placeholder;
+        el.placeholder = narrow.matches ? el.dataset.phNarrow : el.dataset.phWide;
+      });
+    }
+    pickPlaceholders();
+    narrow.addEventListener('change', pickPlaceholders);
+
+    const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* The one status line under the form. Quiet for progress, clay for trouble. */
+    function say(text, quiet) {
+      if (!note) return;
+      note.textContent = text || '';
+      note.classList.toggle('is-quiet', !!quiet);
+    }
+
+    /* A file dropped on the page used to be caught by the attachments field.
+       With that gone the browser would open the file in the tab instead and
+       take the half-written message with it, so the page still refuses the
+       drop — it just has nothing to do with it now. */
+    addEventListener('dragover', e => {
+      if (e.dataTransfer && Array.from(e.dataTransfer.types || []).indexOf('Files') > -1) e.preventDefault();
+    });
+    addEventListener('drop', e => {
+      if (e.dataTransfer && Array.from(e.dataTransfer.types || []).indexOf('Files') > -1) e.preventDefault();
+    });
+
+    /* ---- validation ----
+       form.name is the form's OWN name property, not the field called "name",
+       so the fields are read off form.elements throughout. */
+    const el = n => form.elements.namedItem(n);
+    const val = n => (el(n) && typeof el(n).value === 'string' ? el(n).value.trim() : '');
+
+    /* Deliberately loose: one @, something either side, a dot in the domain.
+       Anything stricter starts rejecting addresses that actually work. */
+    const EMAIL = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/;
+
+    function mark(name, message) {
+      const field = el(name);
+      if (!field) return;
+      const row = field.closest('.row');
+      const slot = document.getElementById('err-' + name);
+      if (row) row.classList.toggle('is-bad', !!message);
+      if (field.setAttribute) field.setAttribute('aria-invalid', message ? 'true' : 'false');
+      if (slot) slot.textContent = message || '';
+    }
+
+    function check() {
+      const bad = [];
+      const push = (n, m) => { mark(n, m); if (m) bad.push(n); };
+
+      push('name', val('name') ? '' : 'We need a name to reply to.');
+      const email = val('email');
+      push('email', !email ? 'We reply by email, so we need one.'
+                  : EMAIL.test(email) ? '' : 'That address looks off — check it over.');
+
+      /* Phone is optional, but if it is filled in it should be dialable. */
+      const phone = val('phone');
+      const digits = phone.replace(/\D/g, '').length;
+      push('phone', !phone ? '' : digits >= 10 && digits <= 15 ? '' : 'That number is missing a few digits.');
+
+      push('details', val('details') ? '' : 'A sentence or two about the property is enough.');
+      return bad;
+    }
+
+    /* Once a field has been marked, re-check it as they fix it, not before —
+       marking a field red while someone is still typing in it is obnoxious. */
+    ['name', 'email', 'phone', 'details'].forEach(n => {
+      const field = el(n);
+      if (!field) return;
+      const again = () => { if (field.closest('.row').classList.contains('is-bad')) check(); };
+      field.addEventListener('blur', again);
+      field.addEventListener('input', again);
+    });
+
+    /* The message box grows with what is typed into it, so it starts at three
+       lines instead of holding open a hole nobody fills. */
+    const details = el('details');
+    const MAX_H = 340;
+    function grow() {
+      if (!details) return;
+      details.style.height = 'auto';
+      details.style.height = Math.min(details.scrollHeight, MAX_H) + 'px';
+      details.style.overflowY = details.scrollHeight > MAX_H ? 'auto' : 'hidden';
+    }
+    if (details) {
+      details.addEventListener('input', grow);
+      addEventListener('resize', grow);
+      requestAnimationFrame(grow);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(grow);
+    }
+
+    /* The whole row is the field. The input's own box covers the space between
+       its rules, and the label covers its column; this catches what is left —
+       the annotation margin, and the gap beside a short label — so a click
+       anywhere on a row puts the caret in that row rather than nowhere. */
+    form.addEventListener('pointerdown', e => {
+      const row = e.target.closest && e.target.closest('.row');
+      if (!row) return;
+      if (e.target.closest('input, textarea, a, button, label')) return;
+      const field = row.querySelector('input, textarea');
+      if (!field) return;
+      e.preventDefault();
+      field.focus();
+      /* land at the end of what is already written, not at the start of it */
+      try { if (field.value) field.setSelectionRange(field.value.length, field.value.length); } catch {}
+    });
+
+    /* Anything a person does to this form counts as a person doing it. */
+    let touched = false;
+    ['keydown', 'pointerdown', 'paste', 'change'].forEach(ev =>
+      form.addEventListener(ev, () => { touched = true; }, { passive: true }));
+
+    /* ---- success ----
+       Three things happen so the send is countable later: the URL gains
+       ?sent=1, a dataLayer event fires for GA/GTM, and a DOM event goes out
+       for anything else that wants to listen. */
+    function recordConversion() {
+      try {
+        const url = new URL(location.href);
+        url.searchParams.set('sent', '1');
+        url.hash = 'contact';
+        history.replaceState(null, '', url);
+      } catch {}
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'enquiry_submitted', form: 'contact' });
+      document.dispatchEvent(new CustomEvent('macaw:enquiry-sent'));
+    }
+
+    /* ---- the confirmation overlay ----
+       Nobody leaves the page. The site dims, the card assembles, and closing
+       it puts them back exactly where they were with an empty form. */
+    const hello = document.getElementById('hello');
+    const helloCard = document.getElementById('hello-card');
+    const helloScrim = document.getElementById('hello-scrim');
+    const helloClose = document.getElementById('hello-close');
+    const helloBody = document.getElementById('hello-body');
+    let helloReturn = null, helloBusy = false;
+
+    /* borrow the mark already sitting in the footer rather than a second copy */
+    (function () {
+      const slot = document.getElementById('hello-mark');
+      const source = document.querySelector('.footer-bar .mark');
+      if (slot && source) {
+        const copy = source.cloneNode(true);
+        copy.removeAttribute('class');
+        slot.appendChild(copy);
+      }
+    })();
+
+    /* the fallback address, appended once, so there is a way out if we are slow */
+    if (helloBody && MAIL) {
+      const a = document.createElement('a');
+      a.href = 'mailto:' + MAIL;
+      a.textContent = MAIL;
+      helloBody.append(' Sooner, if you need it — ', a, '.');
+    }
+
+    function openHello() {
+      if (!hello) return;
+      helloReturn = document.activeElement;
+      hello.classList.remove('is-out');
+      hello.classList.add('is-open');
+      hello.setAttribute('aria-hidden', 'false');
+      lockScroll();
+      /* one frame between visible and animating, or the transitions never run */
+      requestAnimationFrame(() => requestAnimationFrame(() => hello.classList.add('is-in')));
+      setTimeout(() => helloCard.focus({ preventScroll: true }), 60);
+    }
+
+    function closeHello() {
+      if (!hello || helloBusy || !hello.classList.contains('is-open')) return;
+      helloBusy = true;
+      hello.classList.remove('is-in');
+      hello.classList.add('is-out');
+      const done = () => {
+        hello.classList.remove('is-open', 'is-out');
+        hello.setAttribute('aria-hidden', 'true');
+        unlockScroll();
+        helloBusy = false;
+        if (helloReturn && helloReturn.focus) helloReturn.focus({ preventScroll: true });
+      };
+      setTimeout(done, reduceMotion() ? 0 : 360);
+    }
+
+    if (helloClose) helloClose.addEventListener('click', closeHello);
+    if (helloScrim) helloScrim.addEventListener('click', closeHello);
+    addEventListener('keydown', e => {
+      if (!hello || !hello.classList.contains('is-open')) return;
+      if (e.key === 'Escape') { e.preventDefault(); closeHello(); }
+      /* only two stops in here, so the trap is a straight toggle */
+      else if (e.key === 'Tab') { e.preventDefault(); (document.activeElement === helloClose ? helloCard : helloClose).focus(); }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      /* Spam gates first, and they fail silently — a bot told why it was
+         caught is a bot that comes back fixed. */
+      if (val('_gotcha')) { openHello(); return; }
+      const since = Date.now() - Number(stamp && stamp.value || 0);
+      /* The clock only condemns a submission nothing was ever touched for. A
+         fast typist on autofill is not a bot, and telling a real customer
+         their message went through when it did not is the worst thing this
+         page could do. */
+      if (!stamp || !stamp.value || (!touched && since < MIN_FILL_MS)) { openHello(); return; }
+
+      const bad = check();
+      if (bad.length) {
+        say(bad.length > 1 ? 'A couple of fields need another look.' : 'One field needs another look.');
+        const first = el(bad[0]);
+        if (first) {
+          const row = first.closest('.row') || first;
+          row.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'center' });
+          first.focus({ preventScroll: true });
+        }
+        return;
+      }
+
+      if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Sending'; }
+      say('Sending your message…', true);
+
+      /* The fetch, and only the fetch, decides whether this worked. */
+      let sent = false;
+      try {
+        const r = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        sent = r.ok;
+      } catch { sent = false; }
+
+      if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = SEND_LABEL; }
+
+      if (!sent) {
+        say(MAIL
+          ? 'That didn’t go through. Email us directly at ' + MAIL + '.'
+          : 'That didn’t go through — please call us instead.');
+        return;
+      }
+
+      /* It is through: record it and show it first, tidy up second. Nothing
+         in the housekeeping is allowed to turn a success into an error. */
+      recordConversion();
+      say('');
+      openHello();
+
+      try {
+        form.reset();
+        if (stamp) stamp.value = String(Date.now());
+        touched = false;
+        ['name', 'email', 'phone', 'details'].forEach(n => mark(n, ''));
+        grow();
+      } catch {}
+    });
+  })();
+
+</script>
+
+<script>
+  /* ---- Work rail: the gallery's paging dots and tap/swipe guard ---- */
+  (function () {
+    const rail = document.querySelector('.work ul');
+    const dots = document.getElementById('work-dots');
+    if (!rail || !dots) return;
+    const items = Array.from(rail.children);
+    if (items.length < 2) return;
+
+    const gentle = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+
+    items.forEach((li, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Show photo ' + (i + 1) + ' of ' + items.length);
+      b.addEventListener('click', () => {
+        li.scrollIntoView({ behavior: gentle(), block: 'nearest', inline: 'center' });
+      });
+      dots.appendChild(b);
+    });
+    const marks = Array.from(dots.children);
+
+    /* Which dot is lit is a question about scroll position, not visibility.
+       A visibility test works on the phone, where one plate fills the rail,
+       and falls apart on a desktop where three are on screen at once and
+       three dots light together. The plate whose leading edge sits nearest
+       the left of the rail is the one you are looking at, at every width. */
+    let queued = 0;
+    function litDot() {
+      queued = 0;
+      const x = rail.scrollLeft, x0 = items[0].offsetLeft;
+      let best = 0, near = Infinity;
+      items.forEach((li, i) => {
+        const d = Math.abs(li.offsetLeft - x0 - x);
+        if (d < near) { near = d; best = i; }
+      });
+      marks.forEach((m, j) => m.classList.toggle('is-on', j === best));
+    }
+    rail.addEventListener('scroll', () => {
+      if (!queued) queued = requestAnimationFrame(litDot);
+    }, { passive: true });
+    addEventListener('resize', () => {
+      if (!queued) queued = requestAnimationFrame(litDot);
+    });
+    litDot();
+
+    /* A plate is a button, and a swipe across one ends in a click. Without
+       this, every attempt to page the rail would throw the viewer open. */
+    let sx = 0, sy = 0, moved = false, scrolledAt = 0;
+    rail.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; moved = false; }, true);
+    rail.addEventListener('pointermove', e => {
+      if (Math.abs(e.clientX - sx) > 8 || Math.abs(e.clientY - sy) > 8) moved = true;
+    }, true);
+    /* Touch scrolling cancels the pointer stream, so the scroll itself is the
+       second, more reliable signal. */
+    rail.addEventListener('scroll', () => { scrolledAt = Date.now(); }, { passive: true });
+    /* Capture phase on the rail: this runs before the plate's own click
+       listener, so stopping here stops the event ever reaching it. */
+    rail.addEventListener('click', e => {
+      if (moved || Date.now() - scrolledAt < 350) { e.stopPropagation(); e.preventDefault(); }
+    }, true);
+  })();
+
+  /* ---- Review rail: the same paging dots, for the quotations ----
+     Below 620px the three quotations become a snapped horizontal rail. A rail
+     with nothing under it reads as a paragraph that got clipped, so it gets
+     the work rail's own dots — which double as the tap target for moving on.
+     Off the phone the list is a grid and the dots are display:none, so this
+     runs harmlessly either way. */
+  (function () {
+    const rail = document.querySelector('.reviews ul');
+    const dots = document.getElementById('review-dots');
+    if (!rail || !dots) return;
+    const items = Array.from(rail.children);
+    if (items.length < 2) return;
+
+    const gentle = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+
+    items.forEach((li, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Show review ' + (i + 1) + ' of ' + items.length);
+      b.addEventListener('click', () => {
+        li.scrollIntoView({ behavior: gentle(), block: 'nearest', inline: 'center' });
+      });
+      dots.appendChild(b);
+    });
+    const marks = Array.from(dots.children);
+
+    let queued = 0;
+    function litDot() {
+      queued = 0;
+      const x = rail.scrollLeft, x0 = items[0].offsetLeft;
+      let best = 0, near = Infinity;
+      items.forEach((li, i) => {
+        const d = Math.abs(li.offsetLeft - x0 - x);
+        if (d < near) { near = d; best = i; }
+      });
+      marks.forEach((m, j) => m.classList.toggle('is-on', j === best));
+    }
+    rail.addEventListener('scroll', () => {
+      if (!queued) queued = requestAnimationFrame(litDot);
+    }, { passive: true });
+    addEventListener('resize', () => {
+      if (!queued) queued = requestAnimationFrame(litDot);
+    });
+    litDot();
+  })();
+
+  /* ---- Work viewer ----
+     The plate you click keeps its own crop and travels to the middle of the
+     screen. The frame is animated from the thumbnail's rectangle to the full
+     one; the photo inside it carries the inverse scale, so it stays undistorted
+     the whole way and the crop simply opens up. Nothing cross-fades, nothing
+     pops — it is the same photograph the whole time. */
+  (function () {
+    const viewer = document.getElementById('viewer');
+    const plates = Array.from(document.querySelectorAll('.work .plate'));
+    if (!viewer || !plates.length) return;
+
+    const frame   = viewer.querySelector('.viewer-frame');
+    const layers  = Array.from(viewer.querySelectorAll('.viewer-frame img'));
+    const capBox  = viewer.querySelector('.viewer-caption');
+    const capText = capBox.querySelector('p');
+    const ticks   = Array.from(viewer.querySelectorAll('.viewer-ticks button'));
+    const closeBtn = viewer.querySelector('.viewer-close');
+    const peeks = [
+      { btn: viewer.querySelector('.viewer-peek-prev'), win: viewer.querySelector('.viewer-peek-prev span'), img: viewer.querySelector('.viewer-peek-prev img'), dir: -1 },
+      { btn: viewer.querySelector('.viewer-peek-next'), win: viewer.querySelector('.viewer-peek-next span'), img: viewer.querySelector('.viewer-peek-next img'), dir: 1 }
+    ];
+
+    const OPEN = 560, SHUT = 440, SWAP = 420;
+    const EASE = 'cubic-bezier(.22, 1, .36, 1)';
+    const CAP = 84;   // room reserved under the photo for caption + ticks
+    const SHRINK = 0.84;   // neighbours sit a little smaller than the photo in hand
+
+    const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const items = plates.map(plate => {
+      const img = plate.querySelector('img');
+      return { plate, img, caption: plate.closest('figure').querySelector('figcaption').textContent.trim() };
+    });
+    ticks.forEach((t, n) => { if (n >= items.length) t.remove(); });
+    const dots = ticks.filter(t => t.isConnected);
+
+    let index = -1, active = 0, busy = false, lastFocus = null;
+
+    /* The box the photo is centred in. innerWidth/innerHeight report the
+       LAYOUT viewport, which is not what you are looking at the moment the
+       two diverge — a pinch zoom, a mobile URL bar sliding away, or device
+       emulation at a scale. Centring a photo in a box taller than the glass
+       puts it low with a band of scrim above it, which is exactly the
+       symptom. visualViewport reports the glass, so it is the one to
+       measure. Falls back where it is missing. */
+    function glass() {
+      const v = window.visualViewport;
+      return {
+        w: Math.round((v && v.width) || innerWidth),
+        h: Math.round((v && v.height) || innerHeight)
+      };
+    }
+
+    /* how much of each neighbour bleeds in at the screen edges */
+    function peekW(vw) { return Math.max(40, Math.min(150, vw * 0.105)); }
+    function peekGap(vw) { return Math.max(14, Math.min(26, vw * 0.018)); }
+
+    /* Where the photo lands: as large as the viewport allows, at its own
+       aspect ratio, with the caption block centred underneath and enough
+       margin left and right for the neighbours to show. */
+    function target(nw, nh) {
+      const g = glass();
+      const vw = g.w, vh = g.h;
+      const mx = peekW(vw) + peekGap(vw) + Math.max(8, vw * 0.012);
+      const my = Math.max(20, Math.min(64, vh * 0.06));
+      const s = Math.min((vw - mx * 2) / nw, (vh - my * 2 - CAP) / nh);
+      const w = Math.round(nw * s), h = Math.round(nh * s);
+      return { x: Math.round((vw - w) / 2), y: Math.round((vh - (h + CAP)) / 2), w, h };
+    }
+
+    /* The neighbours sit hard against the screen edges, dimmed and clipped,
+       so it reads as more photographs continuing off the sides. */
+    function placePeeks(T, animate) {
+      const vw = glass().w, g = peekGap(vw);
+      const d = animate && !reduce() ? SWAP : 0;
+      const trans = d ? ['left', 'width', 'top', 'height'].map(p => p + ' ' + d + 'ms ' + EASE).join(', ') : 'none';
+      /* the sliver sits a gap away from the frame; the button reaches further
+         out than the sliver so there is something to hit with a thumb. */
+      const room = Math.max(0, T.x - g);
+      const vis = Math.round(Math.min(peekW(vw), room));
+      const hit = Math.round(Math.min(room, vis + 22));
+
+      peeks.forEach(pk => {
+        const at = (index + pk.dir + items.length) % items.length;
+        if (items.length < 2 || at === index || vis < 14) { pk.btn.style.display = 'none'; return; }
+        pk.btn.style.display = '';
+        const it = items[at], n = natural(it);
+        const R = target(n.w, n.h);
+        pk.btn.style.transition = trans;
+        pk.win.style.transition = trans;
+        pk.img.style.transition = trans;
+        pk.btn.style.left = Math.round(pk.dir < 0 ? T.x - g - hit : T.x + T.w + g) + 'px';
+        pk.btn.style.width = hit + 'px';
+        pk.win.style.width = vis + 'px';
+        const sw = Math.round(R.w * SHRINK), sh = Math.round(R.h * SHRINK);
+        pk.img.style.width = sw + 'px';
+        pk.img.style.height = sh + 'px';
+        pk.img.style.top = Math.round(R.y + (R.h - sh) / 2) + 'px';
+        if (pk.img.dataset.at !== String(at)) {
+          pk.img.dataset.at = String(at);
+          pk.img.src = it.img.currentSrc || it.img.src;
+        }
+      });
+    }
+
+    function natural(it) {
+      const w = it.img.naturalWidth, h = it.img.naturalHeight;
+      return w && h ? { w, h } : { w: 4, h: 5 };
+    }
+
+    function setBox(r) {
+      frame.style.left = r.x + 'px';
+      frame.style.top = r.y + 'px';
+      frame.style.width = r.w + 'px';
+      frame.style.height = r.h + 'px';
+    }
+
+    function setCaption(r, text, animate) {
+      if (!animate) capBox.style.transition = 'none';
+      capText.textContent = text;
+      capBox.style.top = (r.y + r.h + 20) + 'px';
+      if (!animate) { void capBox.offsetWidth; capBox.style.transition = ''; }
+      dots.forEach((d, n) => d.setAttribute('aria-current', n === index ? 'true' : 'false'));
+    }
+
+    /* The pair of transforms that make the frame sit exactly on top of the
+       thumbnail while the photo inside it stays at the thumbnail's own scale. */
+    function fold(S, T, n, layer) {
+      const cover = Math.max(S.width / n.w, S.height / n.h);
+      frame.style.transformOrigin = '0 0';
+      frame.style.transform =
+        'translate(' + (S.left - T.x) + 'px, ' + (S.top - T.y) + 'px) scale(' +
+        (S.width / T.w) + ', ' + (S.height / T.h) + ')';
+      layer.style.transformOrigin = '50% 50%';
+      layer.style.transform =
+        'scale(' + ((n.w * cover) / S.width) + ', ' + ((n.h * cover) / S.height) + ')';
+    }
+
+    function open(i) {
+      if (busy || index > -1) return;
+      const it = items[i], n = natural(it);
+      const S = it.plate.getBoundingClientRect();
+      const T = target(n.w, n.h);
+
+      lastFocus = document.activeElement;
+      index = i;
+      active = 0;
+      busy = true;
+
+      layers.forEach((l, k) => {
+        l.style.transition = 'none';
+        l.style.transform = 'none';
+        l.classList.toggle('is-shown', k === 0);
+      });
+      layers[0].src = it.img.currentSrc || it.img.src;
+      layers[0].alt = it.img.alt || '';
+
+      frame.style.transition = 'none';
+      frame.style.transform = 'none';
+      setBox(T);
+      setCaption(T, it.caption, false);
+      placePeeks(T, false);
+
+      it.plate.classList.add('is-open');
+      viewer.classList.remove('is-closing', 'is-fading');
+      viewer.classList.add('is-open');
+      viewer.setAttribute('aria-hidden', 'false');
+      lockScroll();
+
+      if (reduce()) {
+        viewer.classList.add('is-ready');
+        busy = false;
+      } else {
+        fold(S, T, n, layers[0]);
+        void frame.offsetWidth;
+        frame.style.transition = 'transform ' + OPEN + 'ms ' + EASE;
+        layers[0].style.transition = 'transform ' + OPEN + 'ms ' + EASE;
+        frame.style.transform = 'none';
+        layers[0].style.transform = 'none';
+        setTimeout(() => viewer.classList.add('is-ready'), Math.round(OPEN * 0.45));
+        setTimeout(() => { busy = false; }, OPEN);
+      }
+      closeBtn.focus({ preventScroll: true });
+    }
+
+    /* Moving between photos re-frames the box — different photos have
+       different shapes, and the frame takes on each one. */
+    function show(next, way) {
+      if (index < 0 || next === index) return;
+      const dir = way || (next > index ? 1 : -1);
+      const it = items[next], n = natural(it);
+      const T = target(n.w, n.h);
+      const out = layers[active];
+      active = 1 - active;
+      const into = layers[active];
+
+      into.src = it.img.currentSrc || it.img.src;
+      into.alt = it.img.alt || '';
+
+      const d = reduce() ? 0 : SWAP;
+      into.style.transition = 'none';
+      into.style.transform = d ? 'translateX(' + (dir * 28) + 'px)' : 'none';
+      into.classList.remove('is-shown');
+      void into.offsetWidth;
+
+      frame.style.transition = d
+        ? ['left', 'top', 'width', 'height', 'transform'].map(p => p + ' ' + d + 'ms ' + EASE).join(', ')
+        : 'none';
+      frame.style.transform = 'none';
+      setBox(T);
+
+      into.style.transition = d ? 'transform ' + d + 'ms ' + EASE + ', opacity ' + Math.round(d * .6) + 'ms ease' : 'none';
+      out.style.transition = d ? 'transform ' + d + 'ms ' + EASE + ', opacity ' + Math.round(d * .45) + 'ms ease' : 'none';
+      into.style.transform = 'none';
+      into.classList.add('is-shown');
+      out.style.transform = d ? 'translateX(' + (-dir * 28) + 'px)' : 'none';
+      out.classList.remove('is-shown');
+
+      items[index].plate.classList.remove('is-open');
+      index = next;
+      items[index].plate.classList.add('is-open');
+      setCaption(T, it.caption, !!d);
+      placePeeks(T, true);
+    }
+
+    const step = dir => show((index + dir + items.length) % items.length, dir);
+
+    function close() {
+      /* The lock is released here whatever else happens. Both overlays park
+         the page with body overflow hidden, and every early return out of a
+         close was a way to leave it parked — after which the page scrolls to
+         the bottom of the viewport and stops, which reads as a page that has
+         lost its footer. */
+      if (index < 0) { unlockScroll(); return; }
+      if (busy) return;
+      const it = items[index], n = natural(it);
+      const S = it.plate.getBoundingClientRect();
+      const T = {
+        x: parseFloat(frame.style.left), y: parseFloat(frame.style.top),
+        w: parseFloat(frame.style.width), h: parseFloat(frame.style.height)
+      };
+      const onScreen = S.bottom > 0 && S.top < innerHeight && S.width > 0;
+      busy = true;
+      viewer.classList.remove('is-ready');
+      viewer.classList.add('is-closing');
+
+      const done = () => {
+        viewer.classList.remove('is-open', 'is-closing', 'is-fading');
+        viewer.setAttribute('aria-hidden', 'true');
+        unlockScroll();
+        it.plate.classList.remove('is-open');
+        frame.style.transition = 'none';
+        frame.style.transform = 'none';
+        layers.forEach(l => {
+          l.style.transition = 'none';
+          l.style.transform = 'none';
+          l.classList.remove('is-shown');
+        });
+        index = -1;
+        busy = false;
+        if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+      };
+
+      if (reduce() || !onScreen) {
+        viewer.classList.add('is-fading');
+        setTimeout(done, reduce() ? 0 : 300);
+        return;
+      }
+
+      const layer = layers[active];
+      frame.style.transition = 'transform ' + SHUT + 'ms ' + EASE;
+      layer.style.transition = 'transform ' + SHUT + 'ms ' + EASE;
+      fold(S, T, n, layer);
+      setTimeout(done, SHUT);
+    }
+
+    /* Keep the frame honest if the window changes shape mid-view. The
+       visual viewport changes on its own — zoom, URL bar — without firing a
+       window resize, so it is listened to separately where it exists. */
+    function reflow() {
+      if (index < 0) return;
+      const n = natural(items[index]);
+      const T = target(n.w, n.h);
+      frame.style.transition = 'none';
+      frame.style.transform = 'none';
+      setBox(T);
+      setCaption(T, items[index].caption, false);
+      placePeeks(T, false);
+    }
+    addEventListener('resize', reflow);
+    addEventListener('orientationchange', reflow);
+    if (window.visualViewport) {
+      visualViewport.addEventListener('resize', reflow);
+      visualViewport.addEventListener('scroll', reflow);
+    }
+
+    items.forEach((it, i) => it.plate.addEventListener('click', () => open(i)));
+    dots.forEach((d, n) => d.addEventListener('click', e => { e.stopPropagation(); show(n); }));
+    peeks.forEach(pk => pk.btn.addEventListener('click', e => { e.stopPropagation(); step(pk.dir); }));
+    closeBtn.addEventListener('click', e => { e.stopPropagation(); close(); });
+    viewer.addEventListener('click', () => { if (Date.now() - swipedAt > 400) close(); });
+
+    addEventListener('keydown', e => {
+      if (index < 0) return;
+      if (e.key === 'Escape') { e.preventDefault(); close(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+      else if (e.key === 'Tab') {
+        const stops = [peeks[0].btn, peeks[1].btn, closeBtn].concat(dots).filter(el => el.offsetParent !== null);
+        if (!stops.length) return;
+        const at = stops.indexOf(document.activeElement);
+        const to = e.shiftKey ? (at <= 0 ? stops.length - 1 : at - 1) : (at === stops.length - 1 ? 0 : at + 1);
+        e.preventDefault();
+        stops[to].focus();
+      }
+    });
+
+    /* Swipe: the photo follows the finger, then either carries on to the next
+       one or settles back where it was. */
+    let tx = 0, ty = 0, dragging = false, axis = '', swipedAt = 0;
+    viewer.addEventListener('touchstart', e => {
+      if (index < 0 || busy || e.touches.length > 1) return;
+      tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+      dragging = true; axis = '';
+      frame.style.transition = 'none';
+    }, { passive: true });
+
+    viewer.addEventListener('touchmove', e => {
+      if (!dragging || index < 0) return;
+      const dx = e.touches[0].clientX - tx;
+      const dy = e.touches[0].clientY - ty;
+      if (!axis) {
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+        axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+      if (axis !== 'x') return;
+      swipedAt = Date.now();
+      frame.style.transform = 'translateX(' + (dx * 0.6) + 'px)';
+    }, { passive: true });
+
+    viewer.addEventListener('touchend', e => {
+      if (!dragging || index < 0) return;
+      dragging = false;
+      const dx = e.changedTouches[0].clientX - tx;
+      if (axis === 'x' && Math.abs(dx) > 40) {
+        step(dx < 0 ? 1 : -1);
+      } else {
+        frame.style.transition = 'transform 320ms ' + EASE;
+        frame.style.transform = 'none';
+      }
+    }, { passive: true });
+
+    viewer.addEventListener('touchcancel', () => {
+      if (!dragging) return;
+      dragging = false;
+      frame.style.transition = 'transform 320ms ' + EASE;
+      frame.style.transform = 'none';
+    }, { passive: true });
+  })();
+</script>
+</body>
+</html>
